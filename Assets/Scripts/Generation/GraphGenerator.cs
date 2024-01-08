@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 using Orientation = Utils.ORIENTATION;
@@ -8,7 +9,6 @@ public class GraphGenerator : MonoBehaviour
 {
     [SerializeField] private int maxRoomNumber;
 
-    // Start is called before the first frame update
     void Start()
     {
         GenerateDungeon();
@@ -17,41 +17,26 @@ public class GraphGenerator : MonoBehaviour
     private void GenerateDungeon()
     {
         Node startNode = new Node(1);
-        Node previousNode = startNode;
 
-        for (int i = 0; i < maxRoomNumber - 1; i++)
-        {
-            previousNode = GenerateRoom(previousNode);
-        }
+        GenerateRoom(startNode, 1);
 
-        Node endNode = new Node(1);
-        previousNode.Connect(endNode);
-
-        Node currentNode = startNode;
-        
-        while (true)
-        {
-            Debug.Log($"Node {currentNode.NodeId} connected to : ");
-            foreach(var item in currentNode.Connections)
-            {
-                Debug.Log($"{item.NodeA.NodeId}, {item.NodeB.NodeId}");
-                currentNode = item.NodeB;
-            }
-
-            if (currentNode.Connections.Count == 1)
-            {
-                Debug.Log($"Node {currentNode.NodeId} is the last one");
-                break;
-            }
-        }
     }
 
-    private Node GenerateRoom(Node parentNode)
+    private void GenerateRoom(Node parentNode, int numberOfDoors)
     {
-        Node nextNode = new Node(2);
-
-        parentNode.Connect(nextNode);
-
-        return nextNode;
+        string childs = "";
+        do
+        {
+            if (numberOfDoors > parentNode.Connections.Count)
+            {
+                Node nextNode = new Node(Random.Range(1, 4));
+                childs += $"{nextNode.NodeId}, ";
+                parentNode.Connect(nextNode);
+                GenerateRoom(nextNode, Random.Range(1, 4));
+            }
+        } while (numberOfDoors > parentNode.Connections.Count);
+        
+        if (childs == "") childs = parentNode.Connections[0].NodeA.NodeId.ToString();
+        Debug.Log($"Node {parentNode.NodeId} connected to : " + childs);
     }
 }
