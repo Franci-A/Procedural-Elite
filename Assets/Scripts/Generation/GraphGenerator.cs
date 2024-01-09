@@ -14,20 +14,19 @@ public class GraphGenerator : MonoBehaviour
     private void GenerateDungeon()
     {
         Node startNode = new Node(1);
-
-        GenerateRoom(startNode, 1);
+        GenerateRoom(startNode);
     }
 
-    private void GenerateRoom(Node parentNode, int numberOfDoors)
+    private void GenerateRoom(Node parentNode)
     {
         string childs = "";
 
-        while (numberOfDoors > parentNode.Connections.Count)
+        while (parentNode.DoorCount > parentNode.Connections.Count)
         {
             Node nextNode = new Node(Random.Range(1, 4));
             childs += $"{nextNode.NodeId}, ";
             parentNode.Connect(nextNode);
-            GenerateRoom(nextNode, Random.Range(1, 4));
+            GenerateRoom(nextNode);
         }
         
         if (childs == "") childs = parentNode.Connections[0].NodeA.NodeId.ToString();
