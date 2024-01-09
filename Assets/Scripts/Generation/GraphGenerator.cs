@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using UnityEngine;
-
-using Orientation = Utils.ORIENTATION;
 
 public class GraphGenerator : MonoBehaviour
 {
@@ -19,22 +16,19 @@ public class GraphGenerator : MonoBehaviour
         Node startNode = new Node(1);
 
         GenerateRoom(startNode, 1);
-
     }
 
     private void GenerateRoom(Node parentNode, int numberOfDoors)
     {
         string childs = "";
-        do
+
+        while (numberOfDoors > parentNode.Connections.Count)
         {
-            if (numberOfDoors > parentNode.Connections.Count)
-            {
-                Node nextNode = new Node(Random.Range(1, 4));
-                childs += $"{nextNode.NodeId}, ";
-                parentNode.Connect(nextNode);
-                GenerateRoom(nextNode, Random.Range(1, 4));
-            }
-        } while (numberOfDoors > parentNode.Connections.Count);
+            Node nextNode = new Node(Random.Range(1, 4));
+            childs += $"{nextNode.NodeId}, ";
+            parentNode.Connect(nextNode);
+            GenerateRoom(nextNode, Random.Range(1, 4));
+        }
         
         if (childs == "") childs = parentNode.Connections[0].NodeA.NodeId.ToString();
         Debug.Log($"Node {parentNode.NodeId} connected to : " + childs);
