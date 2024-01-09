@@ -17,7 +17,7 @@ MonoBehaviour:
   SliceOffset: {x: 0, y: 0}
   SlicePadding: {x: 0, y: 0}
   BackgroundColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 0.8039216}
-  VisualTileSize: {x: 32, y: 32}
+  VisualTileSize: {x: 36.8, y: 36.8}
   VisualTilePadding: 1
   TileRowLength: 8
   m_tileViews: []
