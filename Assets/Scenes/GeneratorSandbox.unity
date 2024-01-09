@@ -244,7 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f071ce77d937384aa9f8b5c1689bec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRoomNumber: 5
+  goldenPathRoomRange: {x: 4, y: 10}
+  sidePathRoomRange: {x: 4, y: 6}
+  sidePathsNumber: 2
 --- !u!4 &1156883890
 Transform:
   m_ObjectHideFlags: 0
