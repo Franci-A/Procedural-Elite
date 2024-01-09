@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class GraphGenerator : MonoBehaviour
@@ -15,6 +16,14 @@ public class GraphGenerator : MonoBehaviour
     [SerializeField, MinMaxSlider(0, 50)] private Vector2Int sidePathRoomRange;
     [SerializeField] private int sidePathsNumber;
 
+    [Header("Visual")]
+    Dictionary<Vector2, GameObject> positions = new Dictionary<Vector2, GameObject>();
+    List<GameObject> listLine = new List<GameObject>();
+
+    Vector2 currentPosition;
+    [SerializeField] GameObject roomPrefab;
+
+    [SerializeField] LineRenderer lineRendererPrefab;
 
     void Start()
     {
@@ -23,7 +32,14 @@ public class GraphGenerator : MonoBehaviour
 
     private void GenerateDungeon()
     {
-        GenerateGoldenPath();
+        try
+        {
+            GenerateGoldenPath();
+        }
+        catch (System.Exception)
+        {
+            Restart();
+        }
     }
 
     private void GenerateGoldenPath()
@@ -32,13 +48,15 @@ public class GraphGenerator : MonoBehaviour
         int totalRoomCount = goldenPathRoomCount;
 
         Node startNode = new Node(1, RoomType.START);
+        currentPosition = Vector2.zero;
+        CreateNode(startNode, currentPosition, Utils.ORIENTATION.NONE);
 
         int availableSidePaths = sidePathsNumber;
 
         Node lastNode = startNode;
         for (int i = 0; i < goldenPathRoomCount; ++i)
         {
-            bool shouldCreateSidePath = 
+            bool shouldCreateSidePath =
                 (goldenPathRoomCount - i <= availableSidePaths) // if there are as much rooms to place as side paths to generate = BRANCH
                 || availableSidePaths > 0 && Random.Range(0, 2) == 0; // if still side path to generate + Luck
 
@@ -47,6 +65,9 @@ public class GraphGenerator : MonoBehaviour
                 new Node(2);
 
             lastNode.Connect(node);
+
+            CreateNode(node, currentPosition, lastNode.Orientation);
+            LinkNodes(lastNode);
 
             if (shouldCreateSidePath)
             {
@@ -121,4 +142,53 @@ public class GraphGenerator : MonoBehaviour
         if (connectedNodes == "") connectedNodes = "NONE, Dead-End.";
         Debug.Log($"Node {parentNode.NodeId} connected to : " + connectedNodes);
     }
+
+    void Restart()
+    {
+        foreach (var item in positions)
+        {
+            Destroy(item.Value);
+        }
+
+        foreach (var item in listLine)
+        {
+            Destroy(item);
+        }
+
+        listLine.Clear();
+        positions.Clear();
+        GenerateDungeon();
+    }
+
+    private void CreateNode(Node node, Vector2 position, Utils.ORIENTATION lastOrientation)
+    {
+        if (positions.ContainsKey(position)) throw new System.Exception();// needRestart = true;
+        else
+        {
+            var go = Instantiate(roomPrefab, position, Quaternion.identity);
+            positions.Add(position, go);
+
+            Vector2 lastPosition = position;
+
+            if (lastOrientation == Utils.ORIENTATION.NONE) currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation());
+            else currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(lastOrientation));
+
+            node.Orientation = Utils.DirToOrientation(currentPosition - position);
+
+        }
+    }
+
+    private void LinkNodes(Node nodeA)
+    {
+        /*LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity);
+        Vector3 pointA = currentPosition;
+        Vector3 pointB = currentPosition + Utils.OrientationToDir(nodeA.Orientation);
+        //Vector3 pointB = currentPosition + Utils.OrientationToDir(nodeA.Orientation);
+
+        Vector3[] positionArray = { pointA, pointB};
+        line.SetPositions(positionArray);
+
+        listLine.Add(line.gameObject);*/
+    }
+
 }

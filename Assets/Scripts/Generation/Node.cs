@@ -11,9 +11,12 @@ public class Node
     private int doorCount;
     private RoomType type;
 
+    private Utils.ORIENTATION orientation = Utils.ORIENTATION.NONE;
+
     public int DoorCount { get => doorCount; }
     public List<Connection> Connections { get => connections; }
     public int NodeId { get => nodeId; }
+    public Utils.ORIENTATION Orientation { get => orientation; set => orientation = value; }
 
     public Node(int doorCount, RoomType type = RoomType.BASE)
     {
