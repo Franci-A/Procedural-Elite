@@ -7,6 +7,7 @@ public class WeaponsHolder : ScriptableObject
 {
     public List<WeaponObject> weapons;
     private int selectedIndex;
+    public IntVariable playerExp;
 
     public GameObject GetWeaponPrefab()
     {
@@ -19,15 +20,52 @@ public class WeaponsHolder : ScriptableObject
         return null;
     }
     
+    public WeaponObject GetWeapon()
+    {
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            if (weapons[i].index == selectedIndex)
+                return weapons[i];
+        }
+
+        return null;
+    }
+    
     public void SetSelectedWeapons(int i)
     {
         selectedIndex = i;
     }
+
+    public threshold GetCurrentThreshold()
+    {
+        int index = 0;
+        WeaponObject weapon = GetWeapon();
+        for (int i = 0; i < weapon.thresholds.Count; i++)
+        {
+            if (weapon.thresholds[i].expNeeded <= playerExp.Value)
+            {
+                index = i;
+            }
+            else break;
+        }
+        return weapon.thresholds[index];
+    }
 }
 
 [Serializable]
-public struct WeaponObject
+public class WeaponObject
 {
     public int index;
     public GameObject weapon;
+
+    public List<threshold> thresholds;
+}
+
+
+[Serializable]
+public struct threshold
+{
+    public float expNeeded;
+    public float attackDamage;
+    public float attackCooldown;
 }
