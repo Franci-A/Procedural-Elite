@@ -228,7 +228,7 @@ public class GraphGenerator : MonoBehaviour
 
         var go = Instantiate(roomPrefab, position, Quaternion.identity);
         go.name = $"Node {node.NodeId}";
-        go.GetComponent<PlaceholderRoomHandler>().Initialise(node.Type);
+        go.GetComponent<PlaceholderRoomHandler>().Initialise(node);
 
         positions.Add(position, go);
         node.SetPosition(position);
