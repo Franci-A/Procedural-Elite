@@ -25,7 +25,8 @@ public class GraphGenerator : MonoBehaviour
 
     Dictionary<Vector2, GameObject> positions = new Dictionary<Vector2, GameObject>();
     List<GameObject> listLine = new List<GameObject>();
-    Vector2 currentPosition;
+    Vector2 nextPosition;
+    private int totalRoomCount;
 
     private bool IsApplicationRunning { get => Application.isPlaying; }
 
@@ -77,11 +78,11 @@ public class GraphGenerator : MonoBehaviour
     private void GenerateGoldenPath()
     {
         int goldenPathRoomCount = Random.Range(goldenPathRoomRange.x, goldenPathRoomRange.y);
-        int totalRoomCount = goldenPathRoomCount;
+        totalRoomCount = goldenPathRoomCount;
 
         Node startNode = new Node(1, RoomType.START);
-        currentPosition = Vector2.zero;
-        CreateNode(startNode, currentPosition);
+        nextPosition = Vector2.zero;
+        CreateNode(startNode, nextPosition);
 
         int availableSidePaths = sidePathsNumber;
 
@@ -98,24 +99,15 @@ public class GraphGenerator : MonoBehaviour
 
             var lastConnection = lastNode.Connect(node);
 
-            CreateNode(node, currentPosition);
+            CreateNode(node, nextPosition);
             LinkNodes(lastConnection);
 
             if (shouldCreateSidePath)
             {
                 availableSidePaths--;
-
-                int roomCount = 0;
-                int doorCount = 1;
-
-                int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y);
-                GenerateSidePath(node, maxSideRoomCount + node.DoorCount - 1, ref roomCount, ref doorCount);
-
-                Debug.Log($"Side Path {sidePathsNumber - availableSidePaths} generated {roomCount} rooms. At Node {node.NodeId}");
+                GenerateSidePath(node);
 
                 // Lock door to next Golden Path room
-
-                totalRoomCount += maxSideRoomCount;
             }
 
             lastNode = node;
@@ -123,14 +115,34 @@ public class GraphGenerator : MonoBehaviour
 
         Node endNode = new Node(lastNode, 1, RoomType.END);
         var endConnection = lastNode.Connect(endNode);
-        CreateNode(endNode, currentPosition);
+        CreateNode(endNode, nextPosition);
         LinkNodes(endConnection);
 
         DebugConnectedNodes(startNode);
         Debug.Log($"Generated {totalRoomCount} rooms");
     }
 
-    private void GenerateSidePath(Node parentNode, int maxRoomCount, ref int roomCount, ref int doorCount)
+    private void GenerateSidePath(Node startNode)
+    {
+        int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y);
+
+        // /!\ Take into account sidePathRoomRange.minimum room amount /!\
+        Node node = new Node(startNode, Random.Range(2, Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
+        var lastConnection = startNode.Connect(node);
+        CreateNode(node, nextPosition);
+        LinkNodes(lastConnection);
+
+        int roomCount = 1;
+        int doorCount = node.DoorCount - 1;
+
+        GenerateRoomRecurring(node, maxSideRoomCount, ref roomCount, ref doorCount);
+        totalRoomCount += roomCount;
+
+        nextPosition = GetNextAvailablePosition(startNode);
+        Debug.Log($"Side Path generated Node {node.NodeId} with {roomCount} rooms.");
+    }
+
+    private void GenerateRoomRecurring(Node parentNode, int maxRoomCount, ref int roomCount, ref int doorCount)
     {
         roomCount++;
         doorCount += parentNode.DoorCount - 1;
@@ -159,13 +171,13 @@ public class GraphGenerator : MonoBehaviour
 
             var connection = parentNode.Connect(nextNode);
 
-            CreateNode(nextNode, currentPosition);
+            CreateNode(nextNode, nextPosition);
             LinkNodes(connection);
 
-            GenerateSidePath(nextNode, maxRoomCount, ref roomCount, ref doorCount);
+            GenerateRoomRecurring(nextNode, maxRoomCount, ref roomCount, ref doorCount);
         }
 
-        currentPosition = parentNode.Position;
+        nextPosition = GetNextAvailablePosition(parentNode.Parent);
     }
 
     private void DebugConnectedNodes(Node parentNode)
@@ -203,36 +215,17 @@ public class GraphGenerator : MonoBehaviour
 
     private void CreateNode(Node node, Vector2 position)
     {
-        Utils.ORIENTATION lastOrientation = node.Parent == null ?
-            Utils.GetRandomOrientation() :
-            Utils.DirToOrientation(node.Parent.Position - node.Position);
-
-        // Try 4 times to place around
-        int orientationCheckCount = 0;
-        Vector2 initialPosition = position;
-        do
-        {
-            if (lastOrientation == Utils.ORIENTATION.NONE)
-                position += Utils.OrientationToDir(Utils.GetRandomOrientation());
-            else
-                position += Utils.OrientationToDir(Utils.GetRandomOrientation(Utils.OppositeOrientation(lastOrientation)));
-            
-            if (!positions.ContainsKey(position))
-                break;
-            position = initialPosition;
-
-            orientationCheckCount++;
-            if(orientationCheckCount >= 4)
-                throw new System.Exception("Place Already Occupied");
-        } while (true);
-
-        var go = Instantiate(roomPrefab, position, Quaternion.identity);
-        go.name = $"Node {node.NodeId}";
-        go.GetComponent<PlaceholderRoomHandler>().Initialise(node);
-
-        positions.Add(position, go);
         node.SetPosition(position);
-        currentPosition = position;
+        var go = InstantiateRoomPlaceholder(node);
+        positions.Add(position, go);
+
+        if (node.Parent == null)
+        {
+            nextPosition = position + Utils.OrientationToDir(Utils.GetRandomOrientation());
+            return;
+        }
+
+        nextPosition = GetNextAvailablePosition(node);
     }
 
     private void LinkNodes(Connection connection)
@@ -244,6 +237,48 @@ public class GraphGenerator : MonoBehaviour
         Vector3[] positionArray = { pointA, pointB };
         line.SetPositions(positionArray);
 
+        if (Vector2.Distance(pointA, pointB) > 1f)
+        {
+            line.startColor *= Color.red;
+            line.endColor *= Color.red;
+        }
+
         listLine.Add(line.gameObject);
+    }
+
+    private GameObject InstantiateRoomPlaceholder(Node node)
+    {
+        var go = Instantiate(roomPrefab, node.Position, Quaternion.identity);
+        go.name = $"Node {node.NodeId}";
+        go.GetComponent<PlaceholderRoomHandler>().Initialise(node);
+        return go;
+    }
+
+    private Vector2 GetNextAvailablePosition(Node node)
+    {
+        if (node.Parent == null)
+            throw new System.Exception("Bad parameter. Node has no Parent");
+
+        Utils.ORIENTATION lastOrientation = Utils.DirToOrientation(node.Parent.Position - node.Position);
+
+        // Try 4 times to place around
+        int orientationCheckCount = 0;
+        Vector2 nextPosition = node.Position;
+        Vector2 initialPosition = nextPosition;
+        do
+        {
+            nextPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(lastOrientation));
+
+            if (!positions.ContainsKey(nextPosition))
+                break;
+
+            nextPosition = initialPosition;
+
+            orientationCheckCount++;
+            if (orientationCheckCount >= 4)
+                throw new System.Exception("Place Already Occupied");
+        } while (true);
+
+        return nextPosition;
     }
 }

@@ -245,14 +245,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goldenPathRoomRange: {x: 8, y: 20}
-  sidePathRoomRange: {x: 4, y: 10}
+  sidePathRoomRange: {x: 10, y: 16}
   sidePathsNumber: 2
   roomPrefab: {fileID: 6076516581961082644, guid: 18f1f03e63e63674eb1356f47670efdb,
     type: 3}
   lineRendererPrefab: {fileID: 6975423702747079872, guid: 8d60b07731bfbc94ab56f52fd25d1c1e,
     type: 3}
   loopBreakIterationCount: 20000
-  randomSeed: 7
+  randomSeed: 1370
 --- !u!4 &1156883890
 Transform:
   m_ObjectHideFlags: 0
