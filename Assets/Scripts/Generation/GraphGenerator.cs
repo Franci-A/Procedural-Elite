@@ -16,16 +16,33 @@ public class GraphGenerator : MonoBehaviour
     [SerializeField] private int sidePathsNumber;
 
     [Header("Visual")]
+    [SerializeField] GameObject roomPrefab;
+    [SerializeField] LineRenderer lineRendererPrefab;
+
+    [Header("Security & Debug")]
+    [SerializeField] private int loopBreakIterationCount = 20000;
+    [SerializeField] private int randomSeed;
+
     Dictionary<Vector2, GameObject> positions = new Dictionary<Vector2, GameObject>();
     List<GameObject> listLine = new List<GameObject>();
-
     Vector2 currentPosition;
-    [SerializeField] GameObject roomPrefab;
 
-    [SerializeField] LineRenderer lineRendererPrefab;
+    private bool IsApplicationRunning { get => Application.isPlaying; }
 
     void Start()
     {
+        GenerateDungeon();
+    }
+
+    private void ApplyRandomSeed()
+    {
+        Random.seed = randomSeed;
+    }
+
+    [Button("Regenerate Dungeon"), ShowIf(nameof(IsApplicationRunning))]
+    private void RegenerateDungeon()
+    {
+        Restart();
         GenerateDungeon();
     }
 
@@ -34,7 +51,7 @@ public class GraphGenerator : MonoBehaviour
         int loopCount = 0;
         while (true)
         {
-            if (loopCount > 20000)
+            if (loopCount > loopBreakIterationCount)
             {
                 Debug.LogError($"STOPPING GENERATION. TOO MANY ITERATIONS !");
                 break;
@@ -43,7 +60,9 @@ public class GraphGenerator : MonoBehaviour
 
             try
             {
+                ApplyRandomSeed();
                 GenerateGoldenPath();
+                Debug.Log($"Success ! ({loopCount} iterations Only ^^)");
                 break;
             }
             catch (System.Exception e)
@@ -74,8 +93,8 @@ public class GraphGenerator : MonoBehaviour
                 || availableSidePaths > 0 && Random.Range(0, 2) == 0; // if still side path to generate + Luck
 
             Node node = shouldCreateSidePath ?
-                new Node(lastNode, 3) :
-                new Node(lastNode, 2);
+                new Node(lastNode, 3, RoomType.GOLDEN_PATH) :
+                new Node(lastNode, 2, RoomType.GOLDEN_PATH);
 
             var lastConnection = lastNode.Connect(node);
 
@@ -90,7 +109,7 @@ public class GraphGenerator : MonoBehaviour
                 int doorCount = 1;
 
                 int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y);
-                GenerateSidePath(node, maxSideRoomCount, ref roomCount, ref doorCount);
+                GenerateSidePath(node, maxSideRoomCount + node.DoorCount - 1, ref roomCount, ref doorCount);
 
                 Debug.Log($"Side Path {sidePathsNumber - availableSidePaths} generated {roomCount} rooms. At Node {node.NodeId}");
 
@@ -136,7 +155,7 @@ public class GraphGenerator : MonoBehaviour
             if (doorCount + nextDoorCount >= maxRoomCount)
                 nextDoorCount = maxRoomCount - doorCount;
 
-            Node nextNode = new Node(nextDoorCount);
+            Node nextNode = new Node(parentNode, nextDoorCount, RoomType.SIDE_PATH);
 
             var connection = parentNode.Connect(nextNode);
 
@@ -179,6 +198,7 @@ public class GraphGenerator : MonoBehaviour
         listLine.Clear();
         positions.Clear();
         Node.ResetID();
+        randomSeed++;
     }
 
     private void CreateNode(Node node, Vector2 position)
@@ -187,23 +207,32 @@ public class GraphGenerator : MonoBehaviour
             Utils.GetRandomOrientation() :
             Utils.DirToOrientation(node.Parent.Position - node.Position);
 
-        if (lastOrientation == Utils.ORIENTATION.NONE)
-            position += Utils.OrientationToDir(Utils.GetRandomOrientation());
-        else
-            position += Utils.OrientationToDir(Utils.GetRandomOrientation(Utils.OppositeOrientation(lastOrientation)));
-
-        if (positions.ContainsKey(position)) throw new System.Exception("Place Already Occupied");
-        else
+        // Try 4 times to place around
+        int orientationCheckCount = 0;
+        Vector2 initialPosition = position;
+        do
         {
-            var go = Instantiate(roomPrefab, position, Quaternion.identity);
-            positions.Add(position, go);
+            if (lastOrientation == Utils.ORIENTATION.NONE)
+                position += Utils.OrientationToDir(Utils.GetRandomOrientation());
+            else
+                position += Utils.OrientationToDir(Utils.GetRandomOrientation(Utils.OppositeOrientation(lastOrientation)));
+            
+            if (!positions.ContainsKey(position))
+                break;
+            position = initialPosition;
 
-            node.SetPosition(position);
+            orientationCheckCount++;
+            if(orientationCheckCount >= 4)
+                throw new System.Exception("Place Already Occupied");
+        } while (true);
 
-            currentPosition = position;
+        var go = Instantiate(roomPrefab, position, Quaternion.identity);
+        go.name = $"Node {node.NodeId}";
+        go.GetComponent<PlaceholderRoomHandler>().Initialise(node.Type);
 
-            node.Orientation = Utils.DirToOrientation(currentPosition - position);
-        }
+        positions.Add(position, go);
+        node.SetPosition(position);
+        currentPosition = position;
     }
 
     private void LinkNodes(Connection connection)

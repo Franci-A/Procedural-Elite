@@ -15,14 +15,12 @@ public class Node
     private Vector2 position;
     private Node parent;
 
-    private Utils.ORIENTATION orientation = Utils.ORIENTATION.NONE;
-
     public int DoorCount { get => doorCount; }
     public List<Connection> Connections { get => connections; }
     public int NodeId { get => nodeId; }
     public Vector2 Position { get => position; }
-    public Utils.ORIENTATION Orientation { get => orientation; set => orientation = value; }
     public Node Parent { get => parent; }
+    public RoomType Type { get => type; }
 
     public Node(Node parent, int doorCount, RoomType type = RoomType.BASE)
     {
