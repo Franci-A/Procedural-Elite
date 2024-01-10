@@ -19,8 +19,18 @@ public class Attack : MonoBehaviour {
 
 	[System.NonSerialized]
     public GameObject owner;
-	
-	void Update () {
+
+	public bool isProjectile = false;
+	[ShowIf(nameof(isProjectile))]
+	public float speed = 2;
+	private Vector3 direction;
+
+    private void Start()
+    {
+        direction = new Vector3(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad),0);
+    }
+
+    void Update () {
 		if (hasInfiniteLifetime)
 			return;
 
@@ -30,6 +40,15 @@ public class Attack : MonoBehaviour {
 			GameObject.Destroy(gameObject);
 		}
 	}
+
+    private void FixedUpdate()
+    {
+        if (isProjectile)
+        {
+			transform.position += Time.fixedDeltaTime * speed * direction;
+
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
