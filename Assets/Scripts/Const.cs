@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public static class Utils {	
 
@@ -123,10 +127,18 @@ public static class Utils {
         }
     }
 
-    public static ORIENTATION GetRandomOrientation(ORIENTATION exception)
+    public static ORIENTATION GetRandomOrientation(params ORIENTATION[] exception)
     {
+        if (exception.Length >= 4)
+            throw new Exception("No Orientation Available. Too many exceptions");
+        else if (exception.Length == 3)
+        {
+            var enumList = (ORIENTATION[])Enum.GetValues(typeof(ORIENTATION));
+            return enumList.First(o => o != ORIENTATION.NONE && !exception.Contains(o));
+        }
+
         ORIENTATION orientation = GetRandomOrientation();
-        while(orientation == exception)
+        while(exception.Contains(orientation))
         {
             orientation = GetRandomOrientation();
         }
