@@ -172,6 +172,7 @@ public class GraphGenerator : MonoBehaviour
 
             if (lastOrientation == Utils.ORIENTATION.NONE) currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation());
             else currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(lastOrientation));
+            else currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(Utils.OppositeOrientation(lastOrientation)));
 
             node.Orientation = Utils.DirToOrientation(currentPosition - position);
 
