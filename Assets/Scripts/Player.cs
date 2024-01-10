@@ -62,10 +62,11 @@ public class Player : MonoBehaviour {
 
     // Attack attributes
     [Header("Attack")]
-    public GameObject attackPrefab = null;
+    public WeaponsHolder weaponsHolder = null;
     public GameObject attackSpawnPoint = null;
     public float attackCooldown = 0.3f;
     public ORIENTATION orientation = ORIENTATION.FREE;
+    public ExperienceThresholdSO thresholdSO;
 
     private float lastAttackTime = float.MinValue;
 
@@ -231,7 +232,7 @@ public class Player : MonoBehaviour {
     /// </summary>
 	private void Attack()
     {
-        if (Time.time - lastAttackTime < attackCooldown)
+        if (Time.time - lastAttackTime < thresholdSO.GetCurrentThreshold().attackCooldown)
             return;
         lastAttackTime = Time.time;
         SetState(STATE.ATTACKING);
@@ -242,12 +243,12 @@ public class Player : MonoBehaviour {
     /// </summary>
     private void SpawnAttackPrefab()
     {
-        if (attackPrefab == null)
+        if (weaponsHolder.GetWeaponPrefab() == null)
             return;
 
         // transform used for spawn is attackSpawnPoint.transform if attackSpawnPoint is not null. Else it's transform.
         Transform spawnTransform = attackSpawnPoint ? attackSpawnPoint.transform : transform;
-        GameObject.Instantiate(attackPrefab, spawnTransform.position, spawnTransform.rotation);
+        GameObject.Instantiate(weaponsHolder.GetWeaponPrefab(), spawnTransform.position, spawnTransform.rotation);
     }
 
     /// <summary>

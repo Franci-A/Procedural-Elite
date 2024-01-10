@@ -261,11 +261,11 @@ MonoBehaviour:
     speedMax: 2
     acceleration: 12
     friction: 12
-  attackPrefab: {fileID: 2185964762067344080, guid: fedea07bedcd0dc4b8633fc878bfdc59,
-    type: 3}
+  weaponsHolder: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
   attackSpawnPoint: {fileID: 3061304261252655527}
   attackCooldown: 0.3
   orientation: 1
+  thresholdSO: {fileID: 11400000, guid: 1bdca7c892b04834084b562510bef22c, type: 2}
   controllerDeadZone: 0.3
 --- !u!210 &3061304262239656673
 SortingGroup:
