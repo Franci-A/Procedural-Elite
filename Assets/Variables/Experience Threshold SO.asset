@@ -15,16 +15,17 @@ MonoBehaviour:
   thresholds:
   - expNeeded: 0
     attackDamage: 1
-    attackSpeed: 1
-  - expNeeded: 5
-    attackDamage: 1
-    attackSpeed: 1.1
-  - expNeeded: 10
-    attackDamage: 1.5
-    attackSpeed: 1.1
-  - expNeeded: 15
-    attackDamage: 1.5
-    attackSpeed: 1.2
-  - expNeeded: 20
+    attackCooldown: 0.5
+  - expNeeded: 2
     attackDamage: 2
-    attackSpeed: 1.3
+    attackCooldown: 0.4
+  - expNeeded: 5
+    attackDamage: 3
+    attackCooldown: 0.3
+  - expNeeded: 7
+    attackDamage: 4
+    attackCooldown: 0.1
+  - expNeeded: 20
+    attackDamage: 5
+    attackCooldown: 0
+  playerLevel: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}

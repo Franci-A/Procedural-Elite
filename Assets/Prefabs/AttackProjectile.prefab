@@ -156,7 +156,7 @@ PrefabInstance:
     - target: {fileID: 2185964762067344083, guid: fedea07bedcd0dc4b8633fc878bfdc59,
         type: 3}
       propertyPath: lifetime
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2185964762067344083, guid: fedea07bedcd0dc4b8633fc878bfdc59,
         type: 3}

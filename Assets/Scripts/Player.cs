@@ -66,6 +66,7 @@ public class Player : MonoBehaviour {
     public GameObject attackSpawnPoint = null;
     public float attackCooldown = 0.3f;
     public ORIENTATION orientation = ORIENTATION.FREE;
+    public ExperienceThresholdSO thresholdSO;
 
     private float lastAttackTime = float.MinValue;
 
@@ -231,7 +232,7 @@ public class Player : MonoBehaviour {
     /// </summary>
 	private void Attack()
     {
-        if (Time.time - lastAttackTime < attackCooldown)
+        if (Time.time - lastAttackTime < thresholdSO.GetCurrentThreshold().attackCooldown)
             return;
         lastAttackTime = Time.time;
         SetState(STATE.ATTACKING);
