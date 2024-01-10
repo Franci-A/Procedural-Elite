@@ -64,10 +64,10 @@ public class GraphGenerator : MonoBehaviour
                 new Node(3) :
                 new Node(2);
 
-            lastNode.Connect(node);
+            var lastConnection = lastNode.Connect(node);
 
             CreateNode(node, currentPosition, lastNode.Orientation);
-            LinkNodes(lastNode);
+            LinkNodes(lastConnection);
 
             if (shouldCreateSidePath)
             {
@@ -90,7 +90,9 @@ public class GraphGenerator : MonoBehaviour
         }
 
         Node endNode = new Node(1, RoomType.END);
-        lastNode.Connect(endNode);
+        var endConnection = lastNode.Connect(endNode);
+        CreateNode(endNode, currentPosition, lastNode.Orientation);
+        LinkNodes(endConnection);
 
         DebugConnectedNodes(startNode);
         Debug.Log($"Generated {totalRoomCount} rooms");
@@ -133,10 +135,10 @@ public class GraphGenerator : MonoBehaviour
         string connectedNodes = "";
         foreach (var door in parentNode.Connections)
         {
-            if (door.NodeB.NodeId == parentNode.NodeId)
+            if (door.To.NodeId == parentNode.NodeId)
                 continue;
-            connectedNodes += $"{door.NodeB.NodeId}, ";
-            DebugConnectedNodes(door.NodeB);
+            connectedNodes += $"{door.To.NodeId}, ";
+            DebugConnectedNodes(door.To);
         }
 
         if (connectedNodes == "") connectedNodes = "NONE, Dead-End.";
@@ -157,21 +159,21 @@ public class GraphGenerator : MonoBehaviour
 
         listLine.Clear();
         positions.Clear();
+        Debug.ClearDeveloperConsole();
         GenerateDungeon();
     }
 
     private void CreateNode(Node node, Vector2 position, Utils.ORIENTATION lastOrientation)
     {
-        if (positions.ContainsKey(position)) throw new System.Exception();// needRestart = true;
+        if (positions.ContainsKey(position)) throw new System.Exception();
         else
         {
             var go = Instantiate(roomPrefab, position, Quaternion.identity);
             positions.Add(position, go);
 
-            Vector2 lastPosition = position;
+            node.SetPosition(position);
 
             if (lastOrientation == Utils.ORIENTATION.NONE) currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation());
-            else currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(lastOrientation));
             else currentPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(Utils.OppositeOrientation(lastOrientation)));
 
             node.Orientation = Utils.DirToOrientation(currentPosition - position);
@@ -179,17 +181,16 @@ public class GraphGenerator : MonoBehaviour
         }
     }
 
-    private void LinkNodes(Node nodeA)
+    private void LinkNodes(Connection connection)
     {
-        /*LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity);
-        Vector3 pointA = currentPosition;
-        Vector3 pointB = currentPosition + Utils.OrientationToDir(nodeA.Orientation);
-        //Vector3 pointB = currentPosition + Utils.OrientationToDir(nodeA.Orientation);
+        LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity);
+        Vector3 pointA = connection.From.Position;
+        Vector3 pointB = connection.To.Position;
 
-        Vector3[] positionArray = { pointA, pointB};
+        Vector3[] positionArray = { pointA, pointB };
         line.SetPositions(positionArray);
 
-        listLine.Add(line.gameObject);*/
+        listLine.Add(line.gameObject);
     }
 
 }

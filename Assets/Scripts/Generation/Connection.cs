@@ -1,17 +1,17 @@
 public class Connection
 {
     private bool isLocked;
-    private Node nodeA;
-    private Node nodeB;
+    private Node from;
+    private Node to;
 
     public bool IsLocked { get => isLocked; }
-    public Node NodeA { get => nodeA; }
-    public Node NodeB { get => nodeB; }
+    public Node From { get => from; }
+    public Node To { get => to; }
 
     public Connection(Node nodeA, Node nodeB)
     {
-        this.nodeA = nodeA;
-        this.nodeB = nodeB;
+        this.from = nodeA;
+        this.to = nodeB;
         isLocked = false;
     }
 
