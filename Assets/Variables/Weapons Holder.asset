@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cdbf353644eb1c47a7e3903193397fe, type: 3}
+  m_Name: Weapons Holder
+  m_EditorClassIdentifier: 
+  weapons:
+  - index: 0
+    weapon: {fileID: 2185964762067344080, guid: fedea07bedcd0dc4b8633fc878bfdc59,
+      type: 3}
+  - index: 1
+    weapon: {fileID: 1475230311155155286, guid: 465c3a493f9ce23459134253ed71946a,
+      type: 3}

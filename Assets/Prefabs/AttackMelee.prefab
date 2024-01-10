@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2185964762067344109}
   - component: {fileID: 1833291118246165548}
   m_Layer: 8
-  m_Name: AttackMellee
+  m_Name: AttackMelee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
