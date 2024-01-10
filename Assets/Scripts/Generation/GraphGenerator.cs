@@ -12,7 +12,7 @@ public class GraphGenerator : MonoBehaviour
     /// <summary>
     /// Number of Rooms used for a Side Path
     /// </summary>
-    [SerializeField, MinMaxSlider(0, 50)] private Vector2Int sidePathRoomRange;
+    [SerializeField, MinMaxSlider(1, 50)] private Vector2Int sidePathRoomRange;
     [SerializeField] private int sidePathsNumber;
 
     [Header("Visual")]
@@ -77,8 +77,8 @@ public class GraphGenerator : MonoBehaviour
 
     private void GenerateGoldenPath()
     {
-        int goldenPathRoomCount = Random.Range(goldenPathRoomRange.x, goldenPathRoomRange.y);
-        totalRoomCount = goldenPathRoomCount;
+        totalRoomCount = 0;
+        int goldenPathRoomCount = Random.Range(goldenPathRoomRange.x, goldenPathRoomRange.y + 1);
 
         Node startNode = new Node(1, RoomType.START);
         nextPosition = Vector2.zero;
@@ -124,22 +124,21 @@ public class GraphGenerator : MonoBehaviour
 
     private void GenerateSidePath(Node startNode)
     {
-        int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y);
+        int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y + 1);
 
         // /!\ Take into account sidePathRoomRange.minimum room amount /!\
-        Node node = new Node(startNode, Random.Range(2, Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
+        Node node = new Node(startNode, Random.Range(Mathf.Min(2, maxSideRoomCount), Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
         var lastConnection = startNode.Connect(node);
         CreateNode(node, nextPosition);
         LinkNodes(lastConnection);
 
-        int roomCount = 1;
+        int roomCount = 0;
         int doorCount = node.DoorCount - 1;
 
         GenerateRoomRecurring(node, maxSideRoomCount, ref roomCount, ref doorCount);
-        totalRoomCount += roomCount;
 
         nextPosition = GetNextAvailablePosition(startNode);
-        Debug.Log($"Side Path generated Node {node.NodeId} with {roomCount} rooms.");
+        Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");
     }
 
     private void GenerateRoomRecurring(Node parentNode, int maxRoomCount, ref int roomCount, ref int doorCount)
@@ -218,6 +217,8 @@ public class GraphGenerator : MonoBehaviour
         node.SetPosition(position);
         var go = InstantiateRoomPlaceholder(node);
         positions.Add(position, go);
+
+        totalRoomCount++;
 
         if (node.Parent == null)
         {
