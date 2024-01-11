@@ -50,6 +50,12 @@ public class WeaponsHolder : ScriptableObject
         }
         return weapon.thresholds[index];
     }
+
+    public void SwitchWeapon()
+    {
+        selectedIndex++;
+        selectedIndex = Mathf.FloorToInt(Mathf.Repeat(selectedIndex, weapons.Count));
+    }
 }
 
 [Serializable]
