@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GraphGenerator : MonoBehaviour
 {
+    [Header("Procedural Values")]
     /// <summary>
     /// Number of Rooms used for the Golden Path
     /// </summary>
@@ -85,24 +86,21 @@ public class GraphGenerator : MonoBehaviour
         CreateNode(startNode, nextPosition);
 
         int availableSidePaths = sidePathsNumber;
+        int sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
         bool lockNextDoor = false;
 
         Node lastNode = startNode;
         for (int i = 0; i < goldenPathRoomCount; ++i)
         {
-            bool shouldCreateSidePath =
-                (goldenPathRoomCount - i <= availableSidePaths) // if there are as much rooms to place as side paths to generate = BRANCH
-                || availableSidePaths > 0 && Random.Range(0, 2) == 0; // if still side path to generate + Luck
+            bool shouldCreateSidePath = sidePathsNumber > 0 && availableSidePaths > 0 && i >= sidePathBranchRoom;
 
-            Node node = shouldCreateSidePath ?
-                new Node(lastNode, 3, RoomType.GOLDEN_PATH) :
-                new Node(lastNode, 2, RoomType.GOLDEN_PATH);
+            Node node = new Node(lastNode, shouldCreateSidePath ? 3 : 2, RoomType.GOLDEN_PATH);
 
             var lastConnection = lastNode.Connect(node);
             lastConnection.SetLocked(lockNextDoor);
             lockNextDoor = shouldCreateSidePath;
 
-                // Lock door to next Golden Path room
+            // Lock door to next Golden Path room
             CreateNode(node, nextPosition);
             LinkNodes(lastConnection);
 
@@ -110,6 +108,7 @@ public class GraphGenerator : MonoBehaviour
             {
                 availableSidePaths--;
                 GenerateSidePath(node);
+                sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
             }
 
             lastNode = node;
@@ -122,6 +121,16 @@ public class GraphGenerator : MonoBehaviour
 
         DebugConnectedNodes(startNode);
         Debug.Log($"Generated {totalRoomCount} rooms");
+    }
+
+    private int GetNextSidePathBranchRoom(int totalPathRoomCount, int currentSection)
+    {
+        if (sidePathsNumber <= 0) return -1;
+        
+        int sectionRoomCount = totalPathRoomCount / sidePathsNumber;
+        int min = Mathf.Clamp(sectionRoomCount * currentSection, 1, totalPathRoomCount - 1);
+        int max = Mathf.Min(sectionRoomCount * (currentSection + 1), totalPathRoomCount - 1);
+        return Random.Range(min, max + 1);
     }
 
     private void GenerateSidePath(Node startNode)
