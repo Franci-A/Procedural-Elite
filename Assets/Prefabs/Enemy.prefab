@@ -356,8 +356,8 @@ MonoBehaviour:
   attackDistance: 0.9
   attackCooldown: 0.5
   orientation: 1
-  thresholdSO: {fileID: 11400000, guid: 1bdca7c892b04834084b562510bef22c, type: 2}
-  expLevel: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
+  minAngleToRotate: 30
+  weaponsHolder: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
 --- !u!210 &1940373930646248325
 SortingGroup:
   m_ObjectHideFlags: 0
