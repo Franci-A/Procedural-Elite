@@ -81,6 +81,9 @@ public class Enemy : MonoBehaviour
 
 	public static List<Enemy> allEnemies = new List<Enemy>();
 
+    [SerializeField] private ExperienceThresholdSO thresholdSO;
+    [SerializeField] private IntVariable expLevel;
+
     // Use this for initialization
     private void Awake()
     {
@@ -177,7 +180,10 @@ public class Enemy : MonoBehaviour
 		switch (_state)
         {
             case STATE.STUNNED: _currentMovement = stunnedMovement; break;
-            case STATE.DEAD: EndBlink(); Destroy(gameObject); break;
+            case STATE.DEAD:
+                EndBlink();
+                ExperienceManager.Instance.AddExp(1);
+                Destroy(gameObject); break;
             default: _currentMovement = defaultMovement; break;
         }
 
@@ -248,7 +254,7 @@ public class Enemy : MonoBehaviour
             return;
         _lastHitTime = Time.time;
 
-        life -= 1;
+        life -= Mathf.RoundToInt(thresholdSO.thresholds[expLevel.Value].attackDamage);
         if (life <= 0)
         {
             SetState(STATE.DEAD);
