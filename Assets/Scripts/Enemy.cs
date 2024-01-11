@@ -81,8 +81,7 @@ public class Enemy : MonoBehaviour
 
 	public static List<Enemy> allEnemies = new List<Enemy>();
 
-    [SerializeField] private ExperienceThresholdSO thresholdSO;
-    [SerializeField] private IntVariable expLevel;
+    [SerializeField] private WeaponsHolder weaponsHolder;
 
     // Use this for initialization
     private void Awake()
@@ -254,7 +253,7 @@ public class Enemy : MonoBehaviour
             return;
         _lastHitTime = Time.time;
 
-        life -= Mathf.RoundToInt(thresholdSO.thresholds[expLevel.Value].attackDamage);
+        life -= Mathf.RoundToInt(weaponsHolder.GetCurrentThreshold().attackDamage);
         if (life <= 0)
         {
             SetState(STATE.DEAD);

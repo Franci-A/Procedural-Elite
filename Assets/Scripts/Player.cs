@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour {
         ATTACKING = 1,
         STUNNED = 2,
         DEAD = 3,
+        DASHING = 4,
     }
 
     // Life and hit related attributes
@@ -60,13 +62,20 @@ public class Player : MonoBehaviour {
     private Vector2 _direction = Vector2.zero;
     private MovementParameters _currentMovement = null;
 
+    [Header("Dash")]
+    [SerializeField] private float dashCooldown = 1;
+    [SerializeField] private float dashDuration = 1;
+    [SerializeField] private float dashInvincibleTime = .5f;
+    [SerializeField] private float dashForce = 1;
+    private float lastDashTime = float.MinValue;
+    private Vector2 dashDirection = Vector2.right;
+
     // Attack attributes
     [Header("Attack")]
     public WeaponsHolder weaponsHolder = null;
     public GameObject attackSpawnPoint = null;
     public float attackCooldown = 0.3f;
     public ORIENTATION orientation = ORIENTATION.FREE;
-    public ExperienceThresholdSO thresholdSO;
 
     private float lastAttackTime = float.MinValue;
 
@@ -149,9 +158,13 @@ public class Player : MonoBehaviour {
                 _direction = Vector2.zero;
             } else {
                 _direction.Normalize();
+                dashDirection = _direction;
             }
             if(Input.GetButtonDown("Fire1")) {
                 Attack();
+            }else if (Input.GetButtonDown("Dash")){
+                Debug.Log("dash pressed");
+                Dash();
             }
         } else {
             _direction = Vector2.zero;
@@ -209,7 +222,11 @@ public class Player : MonoBehaviour {
     /// </summary>
     void FixedUpdateMovement()
     {
-        if (_direction.magnitude > Mathf.Epsilon) // magnitude > 0
+        if (_state == STATE.DASHING)
+        {
+            _body.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
+        }
+        else if (_direction.magnitude > Mathf.Epsilon) // magnitude > 0
         {
             // If direction magnitude > 0, Accelerate in direction, then clamp velocity to max speed. Do not apply friction if character is moving toward a direction.
             _body.velocity += _direction * _currentMovement.acceleration * Time.fixedDeltaTime;
@@ -232,7 +249,7 @@ public class Player : MonoBehaviour {
     /// </summary>
 	private void Attack()
     {
-        if (Time.time - lastAttackTime < thresholdSO.GetCurrentThreshold().attackCooldown)
+        if (Time.time - lastAttackTime < weaponsHolder.GetCurrentThreshold().attackCooldown)
             return;
         lastAttackTime = Time.time;
         SetState(STATE.ATTACKING);
@@ -256,6 +273,9 @@ public class Player : MonoBehaviour {
     /// </summary>
     public void ApplyHit(Attack attack)
     {
+        if (Time.time - lastDashTime < dashInvincibleTime)
+            return;
+        
         if (Time.time - _lastHitTime < invincibilityDuration)
             return;
         _lastHitTime = Time.time;
@@ -374,5 +394,21 @@ public class Player : MonoBehaviour {
             Attack attack = collision.gameObject.GetComponent<Attack>();
             ApplyHit(attack);
         }
+    }
+
+    public void Dash()
+    {
+        if (Time.time - lastDashTime < dashCooldown + dashDuration)
+            return;
+        lastDashTime = Time.time ;
+
+        SetState(STATE.DASHING);
+        StartCoroutine(DashReset());
+    }
+    
+    IEnumerator DashReset()
+    {
+        yield return new WaitForSeconds(dashDuration);
+        SetState(STATE.IDLE);
     }
 }
