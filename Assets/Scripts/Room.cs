@@ -22,6 +22,9 @@ public class Room : MonoBehaviour {
     private bool _isInitialized = false;
     public static List<Room> allRooms { get; private set; } = new List<Room>();
 
+    [SerializeField] List<Utils.ORIENTATION> orientation = new List<Utils.ORIENTATION>();
+    public List<Utils.ORIENTATION> Orientation { get => orientation; }
+
 
     /// <summary>
     /// Get a list of all doors in a room. Do not use at Awake.

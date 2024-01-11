@@ -395,7 +395,7 @@ MonoBehaviour:
   m_tilemaps:
   - {fileID: 1426011269217010653}
   - {fileID: 5446873782366247807}
-  m_selectedIndex: 0
+  m_selectedIndex: 1
   m_unselectedColorMultiplier: 1
   m_defaultTilemapWindowVisible: 0
   m_displayTilemapRList: 1
@@ -418,6 +418,7 @@ MonoBehaviour:
   isStartRoom: 1
   position: {x: 0, y: 0}
   size: {x: 1, y: 1}
+  orientation: 0100000002000000
 --- !u!50 &4452598050071473784
 Rigidbody2D:
   serializedVersion: 4
