@@ -85,6 +85,7 @@ public class GraphGenerator : MonoBehaviour
         CreateNode(startNode, nextPosition);
 
         int availableSidePaths = sidePathsNumber;
+        bool lockNextDoor = false;
 
         Node lastNode = startNode;
         for (int i = 0; i < goldenPathRoomCount; ++i)
@@ -98,7 +99,10 @@ public class GraphGenerator : MonoBehaviour
                 new Node(lastNode, 2, RoomType.GOLDEN_PATH);
 
             var lastConnection = lastNode.Connect(node);
+            lastConnection.SetLocked(lockNextDoor);
+            lockNextDoor = shouldCreateSidePath;
 
+                // Lock door to next Golden Path room
             CreateNode(node, nextPosition);
             LinkNodes(lastConnection);
 
@@ -106,8 +110,6 @@ public class GraphGenerator : MonoBehaviour
             {
                 availableSidePaths--;
                 GenerateSidePath(node);
-
-                // Lock door to next Golden Path room
             }
 
             lastNode = node;
@@ -242,6 +244,13 @@ public class GraphGenerator : MonoBehaviour
             line.startColor *= Color.red;
             line.endColor *= Color.red;
         }
+
+        if (connection.IsLocked)
+        {
+            line.startColor *= Color.black;
+            line.endColor *= Color.black;
+        }
+
 
         listLine.Add(line.gameObject);
     }
