@@ -69,6 +69,7 @@ public class Enemy : MonoBehaviour
 	public float attackDistance = 0.5f;
     public float attackCooldown = 1.0f;
     public ORIENTATION orientation = ORIENTATION.FREE;
+    [SerializeField] private float minAngleToRotate = 30;
 
     private float lastAttackTime = float.MinValue;
 
@@ -131,6 +132,10 @@ public class Enemy : MonoBehaviour
             Vector2 enemyToPlayer = (Player.Instance.transform.position - transform.position);
             if(enemyToPlayer.magnitude < attackDistance)
             {
+                if (Vector2.Angle(_direction, enemyToPlayer.normalized) < minAngleToRotate) {
+                    _direction = enemyToPlayer.normalized;
+                    transform.eulerAngles = new Vector3(0.0f, 0.0f, ComputeOrientationAngle(_direction));
+                }
                 Attack();
             } else
             {
