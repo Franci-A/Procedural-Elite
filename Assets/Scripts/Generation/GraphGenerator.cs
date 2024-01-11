@@ -126,7 +126,6 @@ public class GraphGenerator : MonoBehaviour
     {
         int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y + 1);
 
-        // /!\ Take into account sidePathRoomRange.minimum room amount /!\
         Node node = new Node(startNode, Random.Range(Mathf.Min(2, maxSideRoomCount), Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
         var lastConnection = startNode.Connect(node);
         CreateNode(node, nextPosition);
