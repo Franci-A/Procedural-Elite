@@ -2362,6 +2362,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1475230311155155286, guid: 465c3a493f9ce23459134253ed71946a,
         type: 3}
+    - target: {fileID: 3061304262239656674, guid: 3e99f044c283cd440bd8fee09c5090db,
+        type: 3}
+      propertyPath: dashMovement.friction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061304262239656674, guid: 3e99f044c283cd440bd8fee09c5090db,
+        type: 3}
+      propertyPath: dashMovement.speedMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061304262239656674, guid: 3e99f044c283cd440bd8fee09c5090db,
+        type: 3}
+      propertyPath: dashMovement.acceleration
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3061304262239656675, guid: 3e99f044c283cd440bd8fee09c5090db,
         type: 3}
       propertyPath: m_Name
