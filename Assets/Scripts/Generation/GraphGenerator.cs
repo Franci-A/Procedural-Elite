@@ -324,19 +324,17 @@ public class GraphGenerator : MonoBehaviour
                 {
                     room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity).GetComponent<Room>();
                     room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
-                    room.id = node.NodeId;
-                    if (room.id == 0)
+                    if (node.NodeId == 0)
                     {
                         room.isStartRoom = true;
-                        //room.CheckIfStartRoom();
                     }
                     else room.isStartRoom = false;
                 }
                 else InstantiateRoomPlaceholder(node);
 
 
-                openList.RemoveAt(0);
             }
+                openList.RemoveAt(0);
         }
     }
 }
