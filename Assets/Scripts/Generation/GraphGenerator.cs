@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class GraphGenerator : MonoBehaviour
@@ -272,23 +271,24 @@ public class GraphGenerator : MonoBehaviour
         if (node.Parent == null)
             throw new System.Exception("Bad parameter. Node has no Parent");
 
-        Utils.ORIENTATION lastOrientation = Utils.DirToOrientation(node.Parent.Position - node.Position);
-
-        // Try 4 times to place around
-        int orientationCheckCount = 0;
+        List<Utils.ORIENTATION> occupiedDirections = new List<Utils.ORIENTATION>() { Utils.DirToOrientation(node.Parent.Position - node.Position) };
+        Utils.ORIENTATION nextDirection;
         Vector2 nextPosition = node.Position;
         Vector2 initialPosition = nextPosition;
+
+        // Try 4 times to place around
         do
         {
-            nextPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(lastOrientation));
+            nextDirection = Utils.GetRandomOrientation(occupiedDirections.ToArray());
+            nextPosition += Utils.OrientationToDir(nextDirection);
 
             if (!positions.Contains(nextPosition))
                 break;
 
+            occupiedDirections.Add(nextDirection);
             nextPosition = initialPosition;
 
-            orientationCheckCount++;
-            if (orientationCheckCount >= 4)
+            if (occupiedDirections.Count >= 4)
                 throw new System.Exception("Place Already Occupied");
         } while (true);
 
