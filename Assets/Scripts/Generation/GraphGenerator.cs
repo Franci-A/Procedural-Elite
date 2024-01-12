@@ -314,14 +314,12 @@ public class GraphGenerator : MonoBehaviour
             }
             else
             {
-                Debug.Log("tzst");
-                GameObject newRoom = roomsList.GetRoom(nodeOrientation);
-                Debug.Log(newRoom?.name);
+                GameObject newRoom = roomsList.GetRoom(nodeOrientation, node.Type);
 
-                // je retire gridsize 2 car l'origine des rooms est en 0,0
                 Room room = null;
                 if (newRoom != null)
                 {
+                    // je retire gridsize / 2 car l'origine des rooms est en 0,0
                     room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity).GetComponent<Room>();
                     room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
                     if (node.NodeId == 0)
@@ -329,6 +327,14 @@ public class GraphGenerator : MonoBehaviour
                         room.isStartRoom = true;
                     }
                     else room.isStartRoom = false;
+
+                    foreach (var connection in node.Connections)
+                    {
+                        if (connection.IsLocked)
+                        {
+                            room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position).SetState(Door.STATE.CLOSED);
+                        }
+                    }
                 }
                 else InstantiateRoomPlaceholder(node);
 
