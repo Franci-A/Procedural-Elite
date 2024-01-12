@@ -24,7 +24,7 @@ public class Room : MonoBehaviour {
 
     [SerializeField] List<Utils.ORIENTATION> orientation = new List<Utils.ORIENTATION>();
     public List<Utils.ORIENTATION> Orientation { get => orientation; }
-
+    private EnemySpawner[] spawners;
 
     /// <summary>
     /// Get a list of all doors in a room. Do not use at Awake.
@@ -100,6 +100,13 @@ public class Room : MonoBehaviour {
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         Bounds cameraBounds = GetWorldBounds();
         cameraFollow.SetBounds(cameraBounds);
+
+        if(spawners.Length ==0)
+            spawners = GetComponentsInChildren<EnemySpawner>();
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            spawners[i].Init();
+        }
     }
 
     /// <summary>

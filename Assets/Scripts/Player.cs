@@ -163,7 +163,6 @@ public class Player : MonoBehaviour {
             if(Input.GetButtonDown("Fire1")) {
                 Attack();
             }else if (Input.GetButtonDown("Dash")){
-                Debug.Log("dash pressed");
                 Dash();
             }
         } else {
