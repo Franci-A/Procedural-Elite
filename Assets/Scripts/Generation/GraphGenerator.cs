@@ -293,7 +293,6 @@ public class GraphGenerator : MonoBehaviour
         while (openList.Count > 0)
         {
             Node node = openList[0];
-            Debug.Log(node.NodeId);
             clostList.Add(node);
 
             List<Utils.ORIENTATION> nodeOrientation = new List<Utils.ORIENTATION>();
@@ -308,13 +307,24 @@ public class GraphGenerator : MonoBehaviour
                 nodeOrientation.Add(connection.GetOrientation(node));
             }
 
-            Debug.Log("tzst");
             GameObject newRoom = roomsList.GetRoom(nodeOrientation);
-            Debug.Log(newRoom?.name);
 
             // je retire gridsize 2 car l'origine des rooms est en 0,0
-            if (newRoom != null) Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity);
+            Room room = null;
+            if (newRoom != null)
+            {
+                room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity).GetComponent<Room>();
+                room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
+                room.id = node.NodeId;
+                if (room.id == 0)
+                {
+                    room.isStartRoom = true;
+                    //room.CheckIfStartRoom();
+                }
+                else room.isStartRoom = false;
+            }
             else InstantiateRoomPlaceholder(node);
+
 
             openList.RemoveAt(0);
 
