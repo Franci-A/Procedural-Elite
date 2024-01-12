@@ -101,7 +101,7 @@ public class Room : MonoBehaviour {
         Bounds cameraBounds = GetWorldBounds();
         cameraFollow.SetBounds(cameraBounds);
 
-        if(spawners.Length ==0)
+        if(spawners == null)
             spawners = GetComponentsInChildren<EnemySpawner>();
         for (int i = 0; i < spawners.Length; i++)
         {
