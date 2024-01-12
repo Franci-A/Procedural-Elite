@@ -11,19 +11,19 @@ public class RoomsSO : ScriptableObject
     public GameObject GetRoom(List<Utils.ORIENTATION> orientations, RoomType roomType)
     {
         List<Room> roomsList = new List<Room>();
-        List<Room> currentRoomList = rooms;
-        /*List<Room> currentRoomList = null;
+        //List<Room> currentRoomList = rooms;
+        List<Room> currentRoomList = null;
         switch (roomType)
         {
             case RoomType.START:
                 currentRoomList = startingRoom;
                 break;
-            *//*case RoomType.END:
-                break;*//*
-                currentRoomList = rooms;
+                /*case RoomType.END:
+                break;*/
             default:
+                currentRoomList = rooms;
                 break;
-        }*/
+        }
 
 
         foreach (var room in currentRoomList)
