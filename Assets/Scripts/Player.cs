@@ -396,6 +396,9 @@ public class Player : MonoBehaviour {
 
     public void Dash()
     {
+        if (!weaponsHolder.GetWeapon().canDash)
+            return; 
+
         if (Time.time - lastDashTime < dashCooldown + dashDuration)
             return;
         lastDashTime = Time.time ;
