@@ -63,6 +63,7 @@ public class WeaponObject
 {
     public int index;
     public GameObject weapon;
+    public bool canDash = false;
 
     public List<threshold> thresholds;
 }

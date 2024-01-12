@@ -111,7 +111,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4766563019477658464}
@@ -157,9 +157,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_FlipX: 0
+  m_Sprite: {fileID: 21300000, guid: 601a60e053206bc4895b0e026ab843a6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -358,6 +358,9 @@ MonoBehaviour:
   orientation: 1
   minAngleToRotate: 30
   weaponsHolder: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!210 &1940373930646248325
 SortingGroup:
   m_ObjectHideFlags: 0
