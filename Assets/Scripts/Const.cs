@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public static class Utils {	
 
@@ -77,6 +81,18 @@ public static class Utils {
 	}
 
     /// <summary>
+    /// Transforms a direction into ORIENTATION (Vector2Int)
+    /// </summary>
+	public static ORIENTATION DirToOrientation(Vector2 dir)
+    {
+        if (dir == new Vector2(0, 1)) return ORIENTATION.NORTH;
+        else if (dir == new Vector2(1, 0)) return ORIENTATION.EAST;
+        else if (dir == new Vector2(0, -1)) return ORIENTATION.SOUTH;
+        else if (dir == new Vector2(-1, 0)) return ORIENTATION.WEST;
+        else return ORIENTATION.NONE;
+    }
+
+    /// <summary>
     /// Gets opposit orientation for a given orientation
     /// </summary>
 	public static ORIENTATION OppositeOrientation(ORIENTATION orientation)
@@ -97,6 +113,36 @@ public static class Utils {
 	public static float DiscreteAngle(float angle, float step)
     {
         return Mathf.Round(angle / step) * step;
+    }
+
+    public static ORIENTATION GetRandomOrientation()
+    {
+        int value = Random.Range(0, 4);
+        switch (value)
+        {
+            case 0: return ORIENTATION.NORTH;
+            case 1: return ORIENTATION.EAST;
+            case 2: return ORIENTATION.SOUTH;
+            default: return ORIENTATION.WEST;
+        }
+    }
+
+    public static ORIENTATION GetRandomOrientation(params ORIENTATION[] exception)
+    {
+        if (exception.Length >= 4)
+            throw new Exception("No Orientation Available. Too many exceptions");
+        else if (exception.Length == 3)
+        {
+            var enumList = (ORIENTATION[])Enum.GetValues(typeof(ORIENTATION));
+            return enumList.First(o => o != ORIENTATION.NONE && !exception.Contains(o));
+        }
+
+        ORIENTATION orientation = GetRandomOrientation();
+        while(exception.Contains(orientation))
+        {
+            orientation = GetRandomOrientation();
+        }
+        return orientation;
     }
 
 }
