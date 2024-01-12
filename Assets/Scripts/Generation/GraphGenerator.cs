@@ -320,22 +320,24 @@ public class GraphGenerator : MonoBehaviour
                 nodeOrientation.Add(connection.GetOrientation(node));
             }
 
-            Debug.Log("tzst");
-            GameObject newRoom = spawnPlaceholderRoomPrefab ? placeholderRoomPrefab : roomsList.GetRoom(nodeOrientation);
-            Debug.Log(newRoom?.name);
-
-            // je retire gridsize 2 car l'origine des rooms est en 0,0
-            if (newRoom != null)
-                Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform);
+            if (spawnPlaceholderRoomPrefab)
+            {
+                InstantiateRoomPlaceholder(node);
+            }
             else
             {
-                var placeholder = InstantiateRoomPlaceholder(node);
-                placeholder.GetComponent<PlaceholderRoomHandler>()?.Initialise(node);
+                Debug.Log("tzst");
+                GameObject newRoom = roomsList.GetRoom(nodeOrientation);
+                Debug.Log(newRoom?.name);
+
+                // je retire gridsize 2 car l'origine des rooms est en 0,0
+                if (newRoom != null)
+                    Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform);
+                else
+                    InstantiateRoomPlaceholder(node);
             }
 
             openList.RemoveAt(0);
-
         }
-        
     }
 }
