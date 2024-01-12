@@ -410,6 +410,7 @@ MonoBehaviour:
   isStartRoom: 1
   position: {x: 0, y: 0}
   size: {x: 1, y: 1}
+  orientation: 010000000200000008000000
 --- !u!50 &4452598050071473784
 Rigidbody2D:
   serializedVersion: 4
