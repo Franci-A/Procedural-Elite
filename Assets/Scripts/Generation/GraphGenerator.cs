@@ -20,13 +20,14 @@ public class GraphGenerator : MonoBehaviour
     [Header("Visual")]
     [SerializeField] private Vector2 gridSize;
     [SerializeField] private RoomsSO roomsList;
-    [SerializeField] GameObject roomPrefab;
     [SerializeField] LineRenderer lineRendererPrefab;
     private Node finalStartNode;
 
     [Header("Security & Debug")]
     [SerializeField] private int loopBreakIterationCount = 20000;
     [SerializeField] private int randomSeed;
+    [SerializeField] private bool spawnPlaceholderRoomPrefab;
+    [SerializeField, ShowIf(nameof(spawnPlaceholderRoomPrefab))] GameObject placeholderRoomPrefab;
 
     List<Vector2> positions = new List<Vector2>();
     List<GameObject> listLine = new List<GameObject>();
@@ -49,6 +50,8 @@ public class GraphGenerator : MonoBehaviour
     private void RegenerateDungeon()
     {
         Restart();
+        for (int i = transform.childCount - 1; i >= 0; --i)
+            Destroy(transform.GetChild(i).gameObject);
         GenerateDungeon();
     }
 
@@ -233,7 +236,7 @@ public class GraphGenerator : MonoBehaviour
 
     private void LinkNodes(Connection connection)
     {
-        LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity);
+        LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity, transform);
         Vector3 pointA = connection.From.Position * gridSize;
         Vector3 pointB = connection.To.Position * gridSize;
 
@@ -258,7 +261,7 @@ public class GraphGenerator : MonoBehaviour
 
     private GameObject InstantiateRoomPlaceholder(Node node)
     {
-        var go = Instantiate(roomPrefab, node.Position * gridSize, Quaternion.identity);
+        var go = Instantiate(placeholderRoomPrefab, node.Position * gridSize, Quaternion.identity, transform);
         go.name = $"Node {node.NodeId}";
         go.GetComponent<PlaceholderRoomHandler>().Initialise(node);
         return go;
@@ -318,12 +321,17 @@ public class GraphGenerator : MonoBehaviour
             }
 
             Debug.Log("tzst");
-            GameObject newRoom = roomsList.GetRoom(nodeOrientation);
+            GameObject newRoom = spawnPlaceholderRoomPrefab ? placeholderRoomPrefab : roomsList.GetRoom(nodeOrientation);
             Debug.Log(newRoom?.name);
 
             // je retire gridsize 2 car l'origine des rooms est en 0,0
-            if (newRoom != null) Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity);
-            else InstantiateRoomPlaceholder(node);
+            if (newRoom != null)
+                Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform);
+            else
+            {
+                var placeholder = InstantiateRoomPlaceholder(node);
+                placeholder.GetComponent<PlaceholderRoomHandler>()?.Initialise(node);
+            }
 
             openList.RemoveAt(0);
 
