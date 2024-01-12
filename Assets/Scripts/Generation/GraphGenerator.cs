@@ -112,7 +112,7 @@ public class GraphGenerator : MonoBehaviour
             lastConnection.SetLocked(lockNextDoor);
             lockNextDoor = shouldCreateSidePath;
 
-                // Lock door to next Golden Path room
+            // Lock door to next Golden Path room
             CreateNode(node, nextPosition);
 
             if (shouldCreateSidePath)
@@ -320,24 +320,25 @@ public class GraphGenerator : MonoBehaviour
                 GameObject newRoom = roomsList.GetRoom(nodeOrientation);
                 Debug.Log(newRoom?.name);
 
-            // je retire gridsize 2 car l'origine des rooms est en 0,0
-            Room room = null;
-            if (newRoom != null)
-            {
-                room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity).GetComponent<Room>();
-                room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
-                room.id = node.NodeId;
-                if (room.id == 0)
+                // je retire gridsize 2 car l'origine des rooms est en 0,0
+                Room room = null;
+                if (newRoom != null)
                 {
-                    room.isStartRoom = true;
-                    //room.CheckIfStartRoom();
+                    room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity).GetComponent<Room>();
+                    room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
+                    room.id = node.NodeId;
+                    if (room.id == 0)
+                    {
+                        room.isStartRoom = true;
+                        //room.CheckIfStartRoom();
+                    }
+                    else room.isStartRoom = false;
                 }
-                else room.isStartRoom = false;
+                else InstantiateRoomPlaceholder(node);
+
+
+                openList.RemoveAt(0);
             }
-            else InstantiateRoomPlaceholder(node);
-
-
-            openList.RemoveAt(0);
         }
     }
 }
