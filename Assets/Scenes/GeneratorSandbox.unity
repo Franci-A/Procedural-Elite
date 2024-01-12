@@ -225,12 +225,12 @@ MonoBehaviour:
   sidePathsNumber: 2
   gridSize: {x: 13, y: 9}
   roomsList: {fileID: 11400000, guid: fe5421ce9a4609d4a9a737b986d0322e, type: 2}
-  roomPrefab: {fileID: 6076516581961082644, guid: 18f1f03e63e63674eb1356f47670efdb,
-    type: 3}
   lineRendererPrefab: {fileID: 6975423702747079872, guid: 8d60b07731bfbc94ab56f52fd25d1c1e,
     type: 3}
   loopBreakIterationCount: 250
   randomSeed: 643
+  spawnPlaceholderRoomPrefab: 0
+  placeholderRoomPrefab: {fileID: 0}
 --- !u!4 &1156883890
 Transform:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 64
-  m_RefResolutionX: 704
+  m_RefResolutionX: 830
   m_RefResolutionY: 576
   m_UpscaleRT: 0
   m_PixelSnapping: 1
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerpSpeed: 5
-  cameraSize: {x: 11, y: 9}
+  cameraSize: {x: 13, y: 9}
 --- !u!81 &2009321527
 AudioListener:
   m_ObjectHideFlags: 0

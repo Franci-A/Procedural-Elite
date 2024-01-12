@@ -305,7 +305,7 @@ public class GraphGenerator : MonoBehaviour
                 if (!clostList.Contains(connection.To))
                 {
                     openList.Add(connection.To);
-                    LinkNodes(connection);
+                    if(spawnPlaceholderRoomPrefab)LinkNodes(connection);
                 }
                 nodeOrientation.Add(connection.GetOrientation(node));
             }
