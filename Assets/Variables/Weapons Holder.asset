@@ -17,7 +17,7 @@ MonoBehaviour:
     weapon: {fileID: 2185964762067344080, guid: fedea07bedcd0dc4b8633fc878bfdc59,
       type: 3}
     canDash: 0
-    playerImage: {fileID: 21300000, guid: a64e2d79cfc86f74d8cd4eaa13fff80c, type: 3}
+    playerImage: {fileID: 21300000, guid: 8a82b782276687946bc7990692c8f0d5, type: 3}
     thresholds:
     - expNeeded: 0
       attackDamage: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     weapon: {fileID: 1475230311155155286, guid: 465c3a493f9ce23459134253ed71946a,
       type: 3}
     canDash: 1
-    playerImage: {fileID: 21300000, guid: 8a82b782276687946bc7990692c8f0d5, type: 3}
+    playerImage: {fileID: 21300000, guid: a64e2d79cfc86f74d8cd4eaa13fff80c, type: 3}
     thresholds:
     - expNeeded: 0
       attackDamage: 1
