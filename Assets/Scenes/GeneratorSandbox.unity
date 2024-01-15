@@ -204,6 +204,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3061304262239656675, guid: 3e99f044c283cd440bd8fee09c5090db,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3061304262239656687, guid: 3e99f044c283cd440bd8fee09c5090db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -288,16 +293,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f071ce77d937384aa9f8b5c1689bec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generateGoldenPath: 1
   goldenPathRoomRange: {x: 13, y: 20}
-  sidePathRoomRange: {x: 5, y: 12}
+  sidePathRoomRange: {x: 6, y: 7}
   sidePathsNumber: 2
-  gridSize: {x: 13, y: 9}
+  pathRoomRange: {x: 26, y: 40}
+  gridSize: {x: 5, y: 5}
   roomsList: {fileID: 11400000, guid: fe5421ce9a4609d4a9a737b986d0322e, type: 2}
   lineRendererPrefab: {fileID: 6975423702747079872, guid: 8d60b07731bfbc94ab56f52fd25d1c1e,
     type: 3}
-  loopBreakIterationCount: 250
-  randomSeed: 643
-  spawnPlaceholderRoomPrefab: 0
+  loopBreakIterationCount: 20000
+  randomSeed: 0
+  spawnPlaceholderRoomPrefab: 1
   placeholderRoomPrefab: {fileID: 6076516581961082644, guid: 18f1f03e63e63674eb1356f47670efdb,
     type: 3}
 --- !u!4 &1156883890
@@ -327,6 +334,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SelectWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397563656785455266, guid: 40ca358c23a82844bb0ae6ef07d86f8c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392355952423199039, guid: 40ca358c23a82844bb0ae6ef07d86f8c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.1998901
       objectReference: {fileID: 0}
     - target: {fileID: 9042760874927181706, guid: 40ca358c23a82844bb0ae6ef07d86f8c,
         type: 3}
@@ -445,6 +462,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hud
+      objectReference: {fileID: 0}
+    - target: {fileID: 7901033774428603941, guid: 047b3acfaf412a1408bfc228dda06de0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8029703232616829795, guid: 047b3acfaf412a1408bfc228dda06de0,
         type: 3}
@@ -598,7 +620,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2009321524}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 993afbba53e10724abecc10a7445f6d1, type: 3}
   m_Name: 

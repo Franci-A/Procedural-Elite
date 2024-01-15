@@ -5,15 +5,18 @@ using UnityEngine;
 public class GraphGenerator : MonoBehaviour
 {
     [Header("Procedural Values")]
+    [SerializeField] private bool generateGoldenPath = true;
     /// <summary>
     /// Number of Rooms used for the Golden Path
     /// </summary>
-    [SerializeField, MinMaxSlider(0, 50)] private Vector2Int goldenPathRoomRange;
+    [SerializeField, ShowIf(nameof(generateGoldenPath)), MinMaxSlider(0, 50)] private Vector2Int goldenPathRoomRange;
     /// <summary>
     /// Number of Rooms used for a Side Path
     /// </summary>
-    [SerializeField, MinMaxSlider(1, 50)] private Vector2Int sidePathRoomRange;
-    [SerializeField] private int sidePathsNumber;
+    [SerializeField, ShowIf(nameof(generateGoldenPath)), MinMaxSlider(1, 50)] private Vector2Int sidePathRoomRange;
+    [SerializeField, ShowIf(nameof(generateGoldenPath))] private int sidePathsNumber;
+
+    [SerializeField, HideIf(nameof(generateGoldenPath)), MinMaxSlider(1, 50)] private Vector2Int pathRoomRange;
 
     [Header("Visual")]
     [SerializeField] private Vector2 gridSize;
@@ -68,7 +71,12 @@ public class GraphGenerator : MonoBehaviour
             try
             {
                 ApplyRandomSeed();
-                GenerateGoldenPath();
+
+                if(generateGoldenPath)
+                    GenerateGoldenPath();
+                else
+                    GenerateBranchingPath();
+                
                 GeneratePrefabs();
                 Debug.Log($"Success ! ({loopCount} iterations Only ^^)");
                 break;
@@ -81,6 +89,21 @@ public class GraphGenerator : MonoBehaviour
         }
         Node.ResetID();
 
+    }
+
+    private void GenerateBranchingPath()
+    {
+        totalRoomCount = 0;
+        int pathRoomCount = Random.Range(pathRoomRange.x, pathRoomRange.y + 1);
+
+        Node startNode = GetStartNode();
+        nextPosition = GetNextAvailablePosition(startNode);
+
+        int roomCount = 0;
+        int doorCount = startNode.DoorCount - 1;
+        GenerateRoomRecurring(startNode, nextPosition, pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
+
+        Debug.Log($"Generated {totalRoomCount} rooms");
     }
 
     private void GenerateGoldenPath()
