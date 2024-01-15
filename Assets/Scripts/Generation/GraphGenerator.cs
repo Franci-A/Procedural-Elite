@@ -158,13 +158,13 @@ public class GraphGenerator : MonoBehaviour
         int roomCount = 0;
         int doorCount = node.DoorCount - 1;
 
-        GenerateRoomRecurring(node, maxSideRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecurring(node, sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
 
         nextPosition = GetNextAvailablePosition(startNode);
         //Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");
     }
 
-    private void GenerateRoomRecurring(Node parentNode, int maxRoomCount, ref int roomCount, ref int doorCount)
+    private void GenerateRoomRecurring(Node parentNode, int minRoomCount, int maxRoomCount, ref int roomCount, ref int doorCount)
     {
         roomCount++;
         doorCount += parentNode.DoorCount - 1;
@@ -179,7 +179,7 @@ public class GraphGenerator : MonoBehaviour
                 minRandomRange = 1;
                 maxRandomRange = 2;
             }
-            else if (roomCount < sidePathRoomRange.x)
+            else if (roomCount < minRoomCount)
             {
                 minRandomRange = 2;
                 maxRandomRange = 4;
@@ -195,7 +195,7 @@ public class GraphGenerator : MonoBehaviour
 
             CreateNode(nextNode, nextPosition);
 
-            GenerateRoomRecurring(nextNode, maxRoomCount, ref roomCount, ref doorCount);
+            GenerateRoomRecurring(nextNode, minRoomCount, maxRoomCount, ref roomCount, ref doorCount);
         }
 
         nextPosition = GetNextAvailablePosition(parentNode.Parent);
