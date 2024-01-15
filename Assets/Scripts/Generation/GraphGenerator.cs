@@ -58,9 +58,9 @@ public class GraphGenerator : MonoBehaviour
         int loopCount = 0;
         while (true)
         {
-            if (loopCount > loopBreakIterationCount)
+            if (loopCount >= loopBreakIterationCount)
             {
-                Debug.LogError($"STOPPING GENERATION. TOO MANY ITERATIONS !");
+                Debug.LogError($"STOPPING GENERATION. TOO MANY ITERATIONS. {loopCount} ITERATIONS !");
                 break;
             }
             loopCount++;
