@@ -85,4 +85,5 @@ public struct threshold
     public float expNeeded;
     public float attackDamage;
     public float attackCooldown;
+    public float mageExplosionSize;
 }

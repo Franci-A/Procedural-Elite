@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d502fa68dc21bf4090d8878ed7908c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSize: 0.32
+  weapons: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
   endSize: 1.4
   scaleTime: 0.3
 --- !u!58 &2363245741641730693
