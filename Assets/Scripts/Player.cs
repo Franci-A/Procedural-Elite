@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
 
@@ -163,7 +162,6 @@ public class Player : MonoBehaviour {
             if(Input.GetButtonDown("Fire1")) {
                 Attack();
             }else if (Input.GetButtonDown("Dash")){
-                Debug.Log("dash pressed");
                 Dash();
             }
         } else {
@@ -398,6 +396,9 @@ public class Player : MonoBehaviour {
 
     public void Dash()
     {
+        if (!weaponsHolder.GetWeapon().canDash)
+            return; 
+
         if (Time.time - lastDashTime < dashCooldown + dashDuration)
             return;
         lastDashTime = Time.time ;

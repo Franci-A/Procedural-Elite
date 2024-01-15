@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e74608781aaea468b40485cde751ca, type: 3}
   m_Name: RoomsSO
   m_EditorClassIdentifier: 
+  startingRoom:
+  - {fileID: 1133512645011604072, guid: f93648dd4c63859428954813fcd11a4e, type: 3}
+  - {fileID: 1133512645011604072, guid: ba8953c515172d84b86993fcacc61184, type: 3}
+  - {fileID: 1133512645011604072, guid: ea8808ce4779df641838d51211bcc84f, type: 3}
+  - {fileID: 1133512645011604072, guid: 8f1a2b65662e82749a4a40b2aac83e22, type: 3}
   rooms:
   - {fileID: 1133512645011604072, guid: aa9544b943b66764190afabb4fcb00e1, type: 3}
   - {fileID: 1133512645011604072, guid: a1ffb082c8d99b14f9593e0c5dc43e10, type: 3}
@@ -69,3 +74,4 @@ MonoBehaviour:
   - {fileID: 1133512645011604072, guid: 7e8e0be59a0511b44bd8f1b0012affe1, type: 3}
   - {fileID: 1133512645011604072, guid: a778ad4401dbde64b951db5d30779cd5, type: 3}
   - {fileID: 1133512645011604072, guid: 0023b9aa8eed238448c31d385536c298, type: 3}
+  endingRoom: []

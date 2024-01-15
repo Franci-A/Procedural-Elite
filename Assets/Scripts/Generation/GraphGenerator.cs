@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -331,7 +330,6 @@ public class GraphGenerator : MonoBehaviour
         while (openList.Count > 0)
         {
             Node node = openList[0];
-            Debug.Log(node.NodeId);
             clostList.Add(node);
 
             List<Utils.ORIENTATION> nodeOrientation = new List<Utils.ORIENTATION>();
@@ -341,7 +339,7 @@ public class GraphGenerator : MonoBehaviour
                 if (!clostList.Contains(connection.To))
                 {
                     openList.Add(connection.To);
-                    LinkNodes(connection);
+                    if(spawnPlaceholderRoomPrefab)LinkNodes(connection);
                 }
                 nodeOrientation.Add(connection.GetOrientation(node));
             }
@@ -352,18 +350,33 @@ public class GraphGenerator : MonoBehaviour
             }
             else
             {
-                Debug.Log("tzst");
-                GameObject newRoom = roomsList.GetRoom(nodeOrientation);
-                Debug.Log(newRoom?.name);
+                GameObject newRoom = roomsList.GetRoom(nodeOrientation, node.Type);
 
-                // je retire gridsize 2 car l'origine des rooms est en 0,0
+                Room room = null;
                 if (newRoom != null)
-                    Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform);
-                else
-                    InstantiateRoomPlaceholder(node);
-            }
+                {
+                    // je retire gridsize / 2 car l'origine des rooms est en 0,0
+                    room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform).GetComponent<Room>();
+                    room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
+                    if (node.NodeId == 0)
+                    {
+                        room.isStartRoom = true;
+                    }
+                    else room.isStartRoom = false;
 
-            openList.RemoveAt(0);
+                    foreach (var connection in node.Connections)
+                    {
+                        if (connection.IsLocked)
+                        {
+                            room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position).SetState(Door.STATE.CLOSED);
+                        }
+                    }
+                }
+                else InstantiateRoomPlaceholder(node);
+
+
+            }
+                openList.RemoveAt(0);
         }
     }
 }

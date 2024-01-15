@@ -1,7 +1,5 @@
 ﻿using CreativeSpore.SuperTilemapEditor;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 /// <summary>
@@ -13,7 +11,7 @@ public class Room : MonoBehaviour {
     public bool isStartRoom = false;
 
     // Position of the room in index coordinates. Coordinates {0,0} are the coordinates of the central room. Room {1,0} is on the right side of room {0,0}.
-	public Vector2Int position = Vector2Int.zero;
+    private Vector2Int position = Vector2Int.zero;
     // Size of the room in index coordinates. By default : {1,1}.
     public Vector2Int size = Vector2Int.one;
 
@@ -24,6 +22,10 @@ public class Room : MonoBehaviour {
 
     [SerializeField] List<Utils.ORIENTATION> orientation = new List<Utils.ORIENTATION>();
     public List<Utils.ORIENTATION> Orientation { get => orientation; }
+    public Vector2Int Position { get => position; set => position = value; }
+    private EnemySpawner[] spawners;
+
+    public int id;
 
 
     /// <summary>
@@ -100,6 +102,13 @@ public class Room : MonoBehaviour {
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         Bounds cameraBounds = GetWorldBounds();
         cameraFollow.SetBounds(cameraBounds);
+
+        if(spawners == null)
+            spawners = GetComponentsInChildren<EnemySpawner>();
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            spawners[i].Init();
+        }
     }
 
     /// <summary>
@@ -144,7 +153,12 @@ public class Room : MonoBehaviour {
 
 	void Start()
 	{
-		RefreshDoors();
+        RefreshDoors();
+        CheckIfStartRoom();
+    }
+
+    public void CheckIfStartRoom()
+    {
         if (isStartRoom)
         {
             Player.Instance.EnterRoom(this);

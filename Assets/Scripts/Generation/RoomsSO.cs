@@ -1,20 +1,32 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/SpawnRoomsList")]
 public class RoomsSO : ScriptableObject
 {
+    public List<Room> startingRoom;
     public List<Room> rooms;
+    public List<Room> endingRoom;
 
-    public GameObject GetRoom(List<Utils.ORIENTATION> orientations)
+    public GameObject GetRoom(List<Utils.ORIENTATION> orientations, RoomType roomType)
     {
         List<Room> roomsList = new List<Room>();
+        //List<Room> currentRoomList = rooms;
+        List<Room> currentRoomList = null;
+        switch (roomType)
+        {
+            case RoomType.START:
+                currentRoomList = startingRoom;
+                break;
+                /*case RoomType.END:
+                break;*/
+            default:
+                currentRoomList = rooms;
+                break;
+        }
 
-        foreach (var room in rooms)
+
+        foreach (var room in currentRoomList)
         {
             if(CheckRoomsOrientation(room.Orientation, orientations)) roomsList.Add(room);
         }

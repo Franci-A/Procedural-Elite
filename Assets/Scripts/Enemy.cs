@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 /// <summary>
 /// Enemy component. Manages inputs, character states and associated game flow.
@@ -84,6 +83,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private WeaponsHolder weaponsHolder;
 
+    [HideInInspector]
+    public UnityEvent onDied;
     // Use this for initialization
     private void Awake()
     {
@@ -187,7 +188,8 @@ public class Enemy : MonoBehaviour
             case STATE.DEAD:
                 EndBlink();
                 ExperienceManager.Instance.AddExp(1);
-                Destroy(gameObject); break;
+                Destroy(gameObject);
+                onDied.Invoke(); break;
             default: _currentMovement = defaultMovement; break;
         }
 
