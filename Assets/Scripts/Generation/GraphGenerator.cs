@@ -88,10 +88,8 @@ public class GraphGenerator : MonoBehaviour
         totalRoomCount = 0;
         int goldenPathRoomCount = Random.Range(goldenPathRoomRange.x, goldenPathRoomRange.y + 1);
 
-        Node startNode = new Node(1, RoomType.START);
+        Node startNode = GetStartNode();
         finalStartNode = startNode;
-        nextPosition = Vector2.zero;
-        PlaceNode(startNode, nextPosition);
         nextPosition = GetNextAvailablePosition(startNode);
 
         int availableSidePaths = sidePathsNumber;
@@ -131,9 +129,7 @@ public class GraphGenerator : MonoBehaviour
             lastNode = node;
         }
 
-        Node endNode = new Node(lastNode, 1, RoomType.END);
-        var endConnection = lastNode.Connect(endNode);
-        PlaceNode(endNode, nextPosition);
+        Node endNode = GetEndNode(lastNode, nextPosition);
         nextPosition = GetNextAvailablePosition(endNode);
 
         DebugConnectedNodes(startNode);
@@ -210,6 +206,24 @@ public class GraphGenerator : MonoBehaviour
             // Update the Next Available Position around the parent Node
             position = GetNextAvailablePosition(parentNode);
         }
+    }
+
+    private Node GetStartNode()
+    {
+        Node startNode = new Node(1, RoomType.START);
+        finalStartNode = startNode;
+        PlaceNode(startNode, Vector2.zero);
+
+        return startNode;
+    }
+
+    private Node GetEndNode(Node lastNode, Vector2 position)
+    {
+        Node endNode = new Node(lastNode, 1, RoomType.END);
+        lastNode.Connect(endNode);
+        PlaceNode(endNode, position);
+
+        return endNode;
     }
 
     private void GenerateSecretRoom(Node parentNode)
