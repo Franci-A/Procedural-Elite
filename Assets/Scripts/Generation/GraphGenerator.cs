@@ -91,7 +91,8 @@ public class GraphGenerator : MonoBehaviour
         Node startNode = new Node(1, RoomType.START);
         finalStartNode = startNode;
         nextPosition = Vector2.zero;
-        CreateNode(startNode, nextPosition);
+        PlaceNode(startNode, nextPosition);
+        nextPosition = GetNextAvailablePosition(startNode);
 
         int availableSidePaths = sidePathsNumber;
         int sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
@@ -111,7 +112,8 @@ public class GraphGenerator : MonoBehaviour
             lockNextDoor = shouldCreateSidePath;
 
             // Lock door to next Golden Path room
-            CreateNode(node, nextPosition);
+            PlaceNode(node, nextPosition);
+            nextPosition = GetNextAvailablePosition(node);
 
             if (shouldCreateSidePath)
             {
@@ -131,7 +133,8 @@ public class GraphGenerator : MonoBehaviour
 
         Node endNode = new Node(lastNode, 1, RoomType.END);
         var endConnection = lastNode.Connect(endNode);
-        CreateNode(endNode, nextPosition);
+        PlaceNode(endNode, nextPosition);
+        nextPosition = GetNextAvailablePosition(endNode);
 
         DebugConnectedNodes(startNode);
         Debug.Log($"Generated {totalRoomCount} rooms");
@@ -153,18 +156,19 @@ public class GraphGenerator : MonoBehaviour
 
         Node node = new Node(startNode, Random.Range(Mathf.Min(2, maxSideRoomCount), Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
         var lastConnection = startNode.Connect(node);
-        CreateNode(node, nextPosition);
+        PlaceNode(node, nextPosition);
+        nextPosition = GetNextAvailablePosition(node);
 
         int roomCount = 0;
         int doorCount = node.DoorCount - 1;
 
-        GenerateRoomRecurring(node, sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecurring(node, nextPosition, sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
 
         nextPosition = GetNextAvailablePosition(startNode);
         //Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");
     }
 
-    private void GenerateRoomRecurring(Node parentNode, int minRoomCount, int maxRoomCount, ref int roomCount, ref int doorCount)
+    private void GenerateRoomRecurring(Node parentNode, Vector2 position, int minRoomCount, int maxRoomCount, ref int roomCount, ref int doorCount)
     {
         roomCount++;
         doorCount += parentNode.DoorCount - 1;
@@ -189,16 +193,23 @@ public class GraphGenerator : MonoBehaviour
             if (doorCount + nextDoorCount >= maxRoomCount)
                 nextDoorCount = maxRoomCount - doorCount;
 
+            // Create a new node at this position
+            // Connected to parentNode
             Node nextNode = new Node(parentNode, nextDoorCount, RoomType.SIDE_PATH);
+            parentNode.Connect(nextNode);
+            PlaceNode(nextNode, position);
 
-            var connection = parentNode.Connect(nextNode);
+            // Generate needed rooms from the new node,
+            // sending the Next Available Position around this new node
+            GenerateRoomRecurring(nextNode, GetNextAvailablePosition(nextNode), minRoomCount, maxRoomCount, ref roomCount, ref doorCount);
 
-            CreateNode(nextNode, nextPosition);
+            // Stop if all the connections are complete
+            if (parentNode.DoorCount <= parentNode.Connections.Count)
+                return;
 
-            GenerateRoomRecurring(nextNode, minRoomCount, maxRoomCount, ref roomCount, ref doorCount);
+            // Update the Next Available Position around the parent Node
+            position = GetNextAvailablePosition(parentNode);
         }
-
-        nextPosition = GetNextAvailablePosition(parentNode.Parent);
     }
 
     private void GenerateSecretRoom(Node parentNode)
@@ -212,7 +223,7 @@ public class GraphGenerator : MonoBehaviour
         connection.SetSecret(true);
         connection.SetLocked(true);
 
-        CreateNode(secretNode, position, false);
+        PlaceNode(secretNode, position);
         nextPosition = GetNextAvailablePosition(parentNode);
     }
 
@@ -238,22 +249,12 @@ public class GraphGenerator : MonoBehaviour
         randomSeed++;
     }
 
-    private void CreateNode(Node node, Vector2 position, bool updateNextAvailablePosition = true)
+    private void PlaceNode(Node node, Vector2 position)
     {
         node.SetPosition(position);
-        //InstantiateRoomPlaceholder(node);
         positions.Add(position);
 
         totalRoomCount++;
-
-        if (!updateNextAvailablePosition) return;
-        if (node.Parent == null)
-        {
-            nextPosition = position + Utils.OrientationToDir(Utils.GetRandomOrientation());
-            return;
-        }
-
-        nextPosition = GetNextAvailablePosition(node);
     }
 
     private void LinkNodes(Connection connection)
@@ -293,10 +294,10 @@ public class GraphGenerator : MonoBehaviour
 
     private Vector2 GetNextAvailablePosition(Node node)
     {
-        if (node.Parent == null)
-            throw new System.Exception("Bad parameter. Node has no Parent");
+        List<Utils.ORIENTATION> occupiedDirections = new List<Utils.ORIENTATION>();
+        if (node.Parent != null)
+            occupiedDirections.Add(Utils.DirToOrientation(node.Parent.Position - node.Position));
 
-        List<Utils.ORIENTATION> occupiedDirections = new List<Utils.ORIENTATION>() { Utils.DirToOrientation(node.Parent.Position - node.Position) };
         Utils.ORIENTATION nextDirection;
         Vector2 pos = node.Position;
         Vector2 initialPosition = pos;
