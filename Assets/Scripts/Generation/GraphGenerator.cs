@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GraphGenerator : MonoBehaviour
 {
+    [Header("Procedural Values")]
     /// <summary>
     /// Number of Rooms used for the Golden Path
     /// </summary>
@@ -93,18 +94,17 @@ public class GraphGenerator : MonoBehaviour
         CreateNode(startNode, nextPosition);
 
         int availableSidePaths = sidePathsNumber;
+        int sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
         bool lockNextDoor = false;
+        int secretRoomIndex = Random.Range(0, goldenPathRoomCount / 2);
 
         Node lastNode = startNode;
         for (int i = 0; i < goldenPathRoomCount; ++i)
         {
-            bool shouldCreateSidePath =
-                (goldenPathRoomCount - i <= availableSidePaths) // if there are as much rooms to place as side paths to generate = BRANCH
-                || availableSidePaths > 0 && Random.Range(0, 2) == 0; // if still side path to generate + Luck
+            bool shouldCreateSidePath = sidePathsNumber > 0 && availableSidePaths > 0 && i >= sidePathBranchRoom;
+            bool shouldCreateSecret = i >= secretRoomIndex;
 
-            Node node = shouldCreateSidePath ?
-                new Node(lastNode, 3, RoomType.GOLDEN_PATH) :
-                new Node(lastNode, 2, RoomType.GOLDEN_PATH);
+            Node node = new Node(lastNode, shouldCreateSidePath ? 3 : 2, RoomType.GOLDEN_PATH);
 
             var lastConnection = lastNode.Connect(node);
             lastConnection.SetLocked(lockNextDoor);
@@ -117,6 +117,13 @@ public class GraphGenerator : MonoBehaviour
             {
                 availableSidePaths--;
                 GenerateSidePath(node);
+                sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
+            }
+
+            if (shouldCreateSecret)
+            {
+                GenerateSecretRoom(node);
+                secretRoomIndex = goldenPathRoomCount;
             }
 
             lastNode = node;
@@ -128,6 +135,16 @@ public class GraphGenerator : MonoBehaviour
 
         DebugConnectedNodes(startNode);
         Debug.Log($"Generated {totalRoomCount} rooms");
+    }
+
+    private int GetNextSidePathBranchRoom(int totalPathRoomCount, int currentSection)
+    {
+        if (sidePathsNumber <= 0) return -1;
+        
+        int sectionRoomCount = totalPathRoomCount / sidePathsNumber;
+        int min = Mathf.Clamp(sectionRoomCount * currentSection, 1, totalPathRoomCount - 1);
+        int max = Mathf.Min(sectionRoomCount * (currentSection + 1), totalPathRoomCount - 1);
+        return Random.Range(min, max + 1);
     }
 
     private void GenerateSidePath(Node startNode)
@@ -184,6 +201,21 @@ public class GraphGenerator : MonoBehaviour
         nextPosition = GetNextAvailablePosition(parentNode.Parent);
     }
 
+    private void GenerateSecretRoom(Node parentNode)
+    {
+        if (parentNode.DoorCount >= 4)
+            throw new System.Exception("Node already has every Connection occupied. Can't generate secret room here !");
+
+        var position = GetNextAvailablePosition(parentNode);
+        var secretNode = new Node(parentNode, 1, RoomType.SECRET);
+        var connection = parentNode.Connect(secretNode);
+        connection.SetSecret(true);
+        connection.SetLocked(true);
+
+        CreateNode(secretNode, position, false);
+        nextPosition = GetNextAvailablePosition(parentNode);
+    }
+
     private void DebugConnectedNodes(Node parentNode)
     {
         string connectedNodes = "";
@@ -206,7 +238,7 @@ public class GraphGenerator : MonoBehaviour
         randomSeed++;
     }
 
-    private void CreateNode(Node node, Vector2 position)
+    private void CreateNode(Node node, Vector2 position, bool updateNextAvailablePosition = true)
     {
         node.SetPosition(position);
         //InstantiateRoomPlaceholder(node);
@@ -214,6 +246,7 @@ public class GraphGenerator : MonoBehaviour
 
         totalRoomCount++;
 
+        if (!updateNextAvailablePosition) return;
         if (node.Parent == null)
         {
             nextPosition = position + Utils.OrientationToDir(Utils.GetRandomOrientation());
@@ -226,6 +259,8 @@ public class GraphGenerator : MonoBehaviour
     private void LinkNodes(Connection connection)
     {
         LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity, transform);
+        line.name = $"  Link {connection.From.NodeId} -> {connection.To.NodeId}";
+
         Vector3 pointA = connection.From.Position * gridSize;
         Vector3 pointB = connection.To.Position * gridSize;
 
@@ -261,23 +296,24 @@ public class GraphGenerator : MonoBehaviour
         if (node.Parent == null)
             throw new System.Exception("Bad parameter. Node has no Parent");
 
-        Utils.ORIENTATION lastOrientation = Utils.DirToOrientation(node.Parent.Position - node.Position);
-
-        // Try 4 times to place around
-        int orientationCheckCount = 0;
+        List<Utils.ORIENTATION> occupiedDirections = new List<Utils.ORIENTATION>() { Utils.DirToOrientation(node.Parent.Position - node.Position) };
+        Utils.ORIENTATION nextDirection;
         Vector2 nextPosition = node.Position;
         Vector2 initialPosition = nextPosition;
+
+        // Try 4 times to place around
         do
         {
-            nextPosition += Utils.OrientationToDir(Utils.GetRandomOrientation(lastOrientation));
+            nextDirection = Utils.GetRandomOrientation(occupiedDirections.ToArray());
+            nextPosition += Utils.OrientationToDir(nextDirection);
 
             if (!positions.Contains(nextPosition))
                 break;
 
+            occupiedDirections.Add(nextDirection);
             nextPosition = initialPosition;
 
-            orientationCheckCount++;
-            if (orientationCheckCount >= 4)
+            if (occupiedDirections.Count >= 4)
                 throw new System.Exception("Place Already Occupied");
         } while (true);
 

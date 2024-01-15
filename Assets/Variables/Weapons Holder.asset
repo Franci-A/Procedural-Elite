@@ -22,12 +22,15 @@ MonoBehaviour:
     - expNeeded: 0
       attackDamage: 1
       attackCooldown: 2
-    - expNeeded: 2
+    - expNeeded: 4
+      attackDamage: 1
+      attackCooldown: 1
+    - expNeeded: 12
       attackDamage: 2
+      attackCooldown: 0.8
+    - expNeeded: 22
+      attackDamage: 3
       attackCooldown: 0.5
-    - expNeeded: 5
-      attackDamage: 5
-      attackCooldown: 0.3
   - index: 1
     weapon: {fileID: 1475230311155155286, guid: 465c3a493f9ce23459134253ed71946a,
       type: 3}
@@ -36,13 +39,16 @@ MonoBehaviour:
     thresholds:
     - expNeeded: 0
       attackDamage: 1
+      attackCooldown: 2
+    - expNeeded: 4
+      attackDamage: 1
       attackCooldown: 1
-    - expNeeded: 2
+    - expNeeded: 12
+      attackDamage: 2
+      attackCooldown: 0.8
+    - expNeeded: 22
       attackDamage: 2
       attackCooldown: 0.5
-    - expNeeded: 5
-      attackDamage: 2
-      attackCooldown: 0.1
   playerExp: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
   OnClassChanged:
     m_PersistentCalls:

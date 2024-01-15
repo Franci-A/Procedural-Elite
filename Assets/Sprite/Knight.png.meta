@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: a64e2d79cfc86f74d8cd4eaa13fff80c
+<<<<<<<< HEAD:Assets/Sprite/Wizard.png.meta
+guid: 8a82b782276687946bc7990692c8f0d5
+========
+guid: ae5b9df9cbcb4a446afbfb5b018ac4eb
+>>>>>>>> main:Assets/Sprite/Knight.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
