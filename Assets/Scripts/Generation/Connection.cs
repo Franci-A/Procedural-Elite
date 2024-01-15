@@ -1,27 +1,33 @@
-using System.Diagnostics;
 using UnityEngine;
-
 
 public class Connection
 {
-    private bool isLocked;
     private Node from;
     private Node to;
+    private bool isLocked;
+    private bool isSecret;
 
-    public bool IsLocked { get => isLocked; }
     public Node From { get => from; }
     public Node To { get => to; }
+    public bool IsLocked { get => isLocked; }
+    public bool IsSecret { get => isSecret; }
 
     public Connection(Node nodeA, Node nodeB)
     {
         this.from = nodeA;
         this.to = nodeB;
         isLocked = false;
+        isSecret = false;
     }
 
     public void SetLocked(bool locked)
     {
         isLocked = locked;
+    }
+
+    public void SetSecret(bool secret)
+    {
+        isSecret = secret;
     }
 
     public Utils.ORIENTATION GetOrientation(Node node)
@@ -32,7 +38,7 @@ public class Connection
         }
         else if (node != from)
         {
-            UnityEngine.Debug.LogError($" Current node is id: {node.NodeId} but you try to connect node {from.NodeId}(from) and node {to.NodeId}(to)");
+            Debug.LogError($" Current node is id: {node.NodeId} but you try to connect node {from.NodeId}(from) and node {to.NodeId}(to)");
             throw new System.Exception("Can't get orientation for this node....");
         }
 

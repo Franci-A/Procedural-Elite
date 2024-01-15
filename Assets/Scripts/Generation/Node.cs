@@ -57,6 +57,12 @@ public class Node
         connections.Add(connection);
     }
 
+    public void AddConnectionWithDoorCount(Connection connection)
+    {
+        AddConnection(connection);
+        doorCount++;
+    }
+
     public void SetPosition(Vector2 position)
     {
         this.position = position;
