@@ -236,6 +236,8 @@ public class GraphGenerator : MonoBehaviour
     private void LinkNodes(Connection connection)
     {
         LineRenderer line = Instantiate(lineRendererPrefab, transform.position, Quaternion.identity, transform);
+        line.name = $"  Link {connection.From.NodeId} -> {connection.To.NodeId}";
+
         Vector3 pointA = connection.From.Position * gridSize;
         Vector3 pointB = connection.To.Position * gridSize;
 
