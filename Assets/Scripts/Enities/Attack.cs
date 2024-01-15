@@ -1,5 +1,6 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Attack is an hitbox script that destroy itself after a given lifetime or when triggered.
@@ -22,6 +23,8 @@ public class Attack : MonoBehaviour {
 	[ShowIf(nameof(isProjectile))]
 	public float speed = 2;
 	private Vector3 direction;
+
+	public UnityEvent onHit;
 
     private void Start()
     {
@@ -53,6 +56,7 @@ public class Attack : MonoBehaviour {
 		if(((1 << collision.gameObject.layer) & destroyOnHit) != 0)
 		{
 			GameObject.Destroy(gameObject);
+			onHit?.Invoke();
 		}
 	}
 }
