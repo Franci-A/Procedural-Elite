@@ -298,26 +298,26 @@ public class GraphGenerator : MonoBehaviour
 
         List<Utils.ORIENTATION> occupiedDirections = new List<Utils.ORIENTATION>() { Utils.DirToOrientation(node.Parent.Position - node.Position) };
         Utils.ORIENTATION nextDirection;
-        Vector2 nextPosition = node.Position;
-        Vector2 initialPosition = nextPosition;
+        Vector2 pos = node.Position;
+        Vector2 initialPosition = pos;
 
         // Try 4 times to place around
         do
         {
             nextDirection = Utils.GetRandomOrientation(occupiedDirections.ToArray());
-            nextPosition += Utils.OrientationToDir(nextDirection);
+            pos += Utils.OrientationToDir(nextDirection);
 
-            if (!positions.Contains(nextPosition))
+            if (!positions.Contains(pos))
                 break;
 
             occupiedDirections.Add(nextDirection);
-            nextPosition = initialPosition;
+            pos = initialPosition;
 
             if (occupiedDirections.Count >= 4)
                 throw new System.Exception("Place Already Occupied");
         } while (true);
 
-        return nextPosition;
+        return pos;
     }
 
     private void GeneratePrefabs()
