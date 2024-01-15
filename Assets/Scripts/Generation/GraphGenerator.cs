@@ -320,7 +320,7 @@ public class GraphGenerator : MonoBehaviour
                 if (newRoom != null)
                 {
                     // je retire gridsize / 2 car l'origine des rooms est en 0,0
-                    room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity).GetComponent<Room>();
+                    room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform).GetComponent<Room>();
                     room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
                     if (node.NodeId == 0)
                     {
