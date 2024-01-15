@@ -4,9 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/SpawnRoomsList")]
 public class RoomsSO : ScriptableObject
 {
-    public List<Room> startingRoom;
+    public List<Room> startingRooms;
     public List<Room> rooms;
-    public List<Room> endingRoom;
+    public List<Room> endingRooms;
+    public List<Room> secretRooms;
 
     public GameObject GetRoom(List<Utils.ORIENTATION> orientations, RoomType roomType)
     {
@@ -16,10 +17,14 @@ public class RoomsSO : ScriptableObject
         switch (roomType)
         {
             case RoomType.START:
-                currentRoomList = startingRoom;
+                currentRoomList = startingRooms;
                 break;
-                /*case RoomType.END:
-                break;*/
+                case RoomType.END:
+                currentRoomList = endingRooms;
+                break;
+                case RoomType.SECRET:
+                    currentRoomList = secretRooms;
+                break;
             default:
                 currentRoomList = rooms;
                 break;
