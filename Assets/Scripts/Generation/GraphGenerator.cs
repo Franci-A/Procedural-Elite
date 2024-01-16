@@ -89,7 +89,7 @@ public class GraphGenerator : MonoBehaviour
 
         int roomCount = 0;
         int doorCount = startNode.DoorCount - 1;
-        GenerateRoomRecurring(startNode, nextPosition, data.pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecursive(startNode, nextPosition, data.pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
 
         Debug.Log($"Generated {totalRoomCount} rooms");
     }
@@ -169,13 +169,13 @@ public class GraphGenerator : MonoBehaviour
         int roomCount = 0;
         int doorCount = node.DoorCount - 1;
 
-        GenerateRoomRecurring(node, nextPosition, data.sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecursive(node, nextPosition, data.sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
 
         nextPosition = GetNextAvailablePosition(startNode);
         //Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");
     }
 
-    private void GenerateRoomRecurring(Node parentNode, Vector2 position, int minRoomCount, int maxRoomCount, ref int roomCount, ref int doorCount)
+    private void GenerateRoomRecursive(Node parentNode, Vector2 position, int minRoomCount, int maxRoomCount, ref int roomCount, ref int doorCount)
     {
         roomCount++;
         doorCount += parentNode.DoorCount - 1;
@@ -208,7 +208,7 @@ public class GraphGenerator : MonoBehaviour
 
             // Generate needed rooms from the new node,
             // sending the Next Available Position around this new node
-            GenerateRoomRecurring(nextNode, GetNextAvailablePosition(nextNode), minRoomCount, maxRoomCount, ref roomCount, ref doorCount);
+            GenerateRoomRecursive(nextNode, GetNextAvailablePosition(nextNode), minRoomCount, maxRoomCount, ref roomCount, ref doorCount);
 
             // Stop if all the connections are complete
             if (parentNode.DoorCount <= parentNode.Connections.Count)
