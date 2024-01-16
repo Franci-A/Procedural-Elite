@@ -154,7 +154,7 @@ public class GraphGenerator : MonoBehaviour
         Node endNode = GetEndNode(lastNode, nextPosition);
         nextPosition = GetNextAvailablePosition(endNode);
 
-        DebugConnectedNodes(startNode);
+        //DebugConnectedNodes(startNode);
         Debug.Log($"Generated {totalRoomCount} rooms");
     }
 
@@ -296,7 +296,7 @@ public class GraphGenerator : MonoBehaviour
         }
 
         if (connectedNodes == "") connectedNodes = "NONE, Dead-End.";
-        //Debug.Log($"Node {parentNode.NodeId} connected to : " + connectedNodes);
+        Debug.Log($"Node {parentNode.NodeId} connected to : " + connectedNodes);
     }
 
     void Restart()
