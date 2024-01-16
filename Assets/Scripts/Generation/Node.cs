@@ -14,6 +14,7 @@ public class Node
     private RoomType type;
     private Vector2 position;
     private Node parent;
+    private int depth;
 
     public int DoorCount { get => doorCount; }
     public List<Connection> Connections { get => connections; }
@@ -21,6 +22,7 @@ public class Node
     public Vector2 Position { get => position; }
     public Node Parent { get => parent; }
     public RoomType Type { get => type; }
+    public int Depth { get => depth; }
 
     public Node(Node parent, int doorCount, RoomType type = RoomType.BASE)
     {
@@ -29,6 +31,7 @@ public class Node
         this.nodeId = ++CurrentNodeID;
         this.parent = parent;
 
+        depth = parent.Depth + 1;
         connections = new List<Connection>();
     }
 
@@ -39,6 +42,7 @@ public class Node
         this.nodeId = ++CurrentNodeID;
         this.parent = null;
 
+        depth = 0;
         connections = new List<Connection>();
     }
 
@@ -66,5 +70,10 @@ public class Node
     public void SetPosition(Vector2 position)
     {
         this.position = position;
+    }
+
+    public void SetType(RoomType type)
+    {
+        this.type = type;
     }
 }

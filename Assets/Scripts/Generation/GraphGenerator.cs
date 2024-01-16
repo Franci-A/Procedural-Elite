@@ -90,6 +90,17 @@ public class GraphGenerator : MonoBehaviour
         int roomCount = 0;
         int doorCount = startNode.DoorCount - 1;
         GenerateRoomRecursive(startNode, nextPosition, data.pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
+        
+        var lastNode = GetDeepestNode(startNode);
+        {
+            Node currentNode = lastNode;
+            while (currentNode.Parent != null)
+            {
+                currentNode.SetType(RoomType.GOLDEN_PATH);
+                currentNode = currentNode.Parent;
+            }
+        }
+        var endNode = GetEndNode(lastNode, GetNextAvailablePosition(lastNode));
 
         Debug.Log($"Generated {totalRoomCount} rooms");
     }
@@ -235,6 +246,27 @@ public class GraphGenerator : MonoBehaviour
         PlaceNode(endNode, position);
 
         return endNode;
+    }
+
+    private Node GetDeepestNode(Node startNode)
+    {
+        Node GetDeepestNodeRecursive(Node parentNode, Node deepestNode)
+        {
+            foreach (Connection connection in parentNode.Connections)
+            {
+                if (connection.To == parentNode)
+                    continue;
+
+                deepestNode = GetDeepestNodeRecursive(connection.To, deepestNode);
+                if (connection.To.Depth <= deepestNode.Depth)
+                    continue;
+
+                deepestNode = connection.To;
+            }
+            return deepestNode;
+        }
+
+        return GetDeepestNodeRecursive(startNode, startNode);
     }
 
     private void GenerateSecretRoom(Node parentNode)
