@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
         DASHING = 4,
     }
 
+    [SerializeField] private SpriteRenderer renderer;
     // Life and hit related attributes
     [Header("Life")]
     public int life = 3;
@@ -103,6 +104,8 @@ public class Player : MonoBehaviour {
     private void Start()
     {
         SetState(STATE.IDLE);
+        OnChangeClass();
+        weaponsHolder.OnClassChanged.AddListener(OnChangeClass);
     }
 
     private void Update () {
@@ -411,5 +414,10 @@ public class Player : MonoBehaviour {
     {
         yield return new WaitForSeconds(dashDuration);
         SetState(STATE.IDLE);
+    }
+
+    private void OnChangeClass()
+    {
+        renderer.sprite = weaponsHolder.GetPlayerSprite();
     }
 }

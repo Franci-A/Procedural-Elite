@@ -199,6 +199,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3061304262239656674, guid: 3e99f044c283cd440bd8fee09c5090db,
+        type: 3}
+      propertyPath: life
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3061304262239656675, guid: 3e99f044c283cd440bd8fee09c5090db,
         type: 3}
       propertyPath: m_Name
@@ -288,9 +293,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f071ce77d937384aa9f8b5c1689bec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generateGoldenPath: 1
   goldenPathRoomRange: {x: 13, y: 20}
   sidePathRoomRange: {x: 5, y: 12}
   sidePathsNumber: 2
+  pathRoomRange: {x: 0, y: 0}
   gridSize: {x: 13, y: 9}
   roomsList: {fileID: 11400000, guid: fe5421ce9a4609d4a9a737b986d0322e, type: 2}
   lineRendererPrefab: {fileID: 6975423702747079872, guid: 8d60b07731bfbc94ab56f52fd25d1c1e,
@@ -327,6 +334,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SelectWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392355952423199039, guid: 40ca358c23a82844bb0ae6ef07d86f8c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.1999817
       objectReference: {fileID: 0}
     - target: {fileID: 9042760874927181706, guid: 40ca358c23a82844bb0ae6ef07d86f8c,
         type: 3}
@@ -441,6 +453,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7871163775679350020, guid: 047b3acfaf412a1408bfc228dda06de0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7901033774428603941, guid: 047b3acfaf412a1408bfc228dda06de0,
         type: 3}
       propertyPath: m_Name
@@ -544,6 +561,11 @@ PrefabInstance:
     - target: {fileID: 8029703232616829795, guid: 047b3acfaf412a1408bfc228dda06de0,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014128555724582710, guid: 047b3acfaf412a1408bfc228dda06de0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

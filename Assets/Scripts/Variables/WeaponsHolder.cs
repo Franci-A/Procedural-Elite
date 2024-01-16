@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(menuName ="Weapon Holder")]
 public class WeaponsHolder : ScriptableObject
@@ -8,6 +9,7 @@ public class WeaponsHolder : ScriptableObject
     public List<WeaponObject> weapons;
     private int selectedIndex;
     public IntVariable playerExp;
+    public UnityEvent OnClassChanged;
 
     public GameObject GetWeaponPrefab()
     {
@@ -34,6 +36,7 @@ public class WeaponsHolder : ScriptableObject
     public void SetSelectedWeapons(int i)
     {
         selectedIndex = i;
+        OnClassChanged?.Invoke();
     }
 
     public threshold GetCurrentThreshold()
@@ -51,10 +54,16 @@ public class WeaponsHolder : ScriptableObject
         return weapon.thresholds[index];
     }
 
+    public Sprite GetPlayerSprite()
+    {
+        return weapons[selectedIndex].playerImage;
+    }
+
     public void SwitchWeapon()
     {
         selectedIndex++;
         selectedIndex = Mathf.FloorToInt(Mathf.Repeat(selectedIndex, weapons.Count));
+        OnClassChanged?.Invoke();
     }
 }
 
@@ -64,6 +73,7 @@ public class WeaponObject
     public int index;
     public GameObject weapon;
     public bool canDash = false;
+    public Sprite playerImage;
 
     public List<threshold> thresholds;
 }
@@ -75,4 +85,5 @@ public struct threshold
     public float expNeeded;
     public float attackDamage;
     public float attackCooldown;
+    public float mageExplosionSize;
 }
