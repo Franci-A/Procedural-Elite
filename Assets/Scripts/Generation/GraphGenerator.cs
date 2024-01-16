@@ -4,19 +4,7 @@ using UnityEngine;
 
 public class GraphGenerator : MonoBehaviour
 {
-    [Header("Procedural Values")]
-    [SerializeField] private bool generateGoldenPath = true;
-    /// <summary>
-    /// Number of Rooms used for the Golden Path
-    /// </summary>
-    [SerializeField, ShowIf(nameof(generateGoldenPath)), MinMaxSlider(0, 50)] private Vector2Int goldenPathRoomRange;
-    /// <summary>
-    /// Number of Rooms used for a Side Path
-    /// </summary>
-    [SerializeField, ShowIf(nameof(generateGoldenPath)), MinMaxSlider(1, 50)] private Vector2Int sidePathRoomRange;
-    [SerializeField, ShowIf(nameof(generateGoldenPath))] private int sidePathsNumber;
-
-    [SerializeField, HideIf(nameof(generateGoldenPath)), MinMaxSlider(1, 50)] private Vector2Int pathRoomRange;
+    [SerializeField, Expandable, Label("Procedural Values")] private ProceduralData data;
 
     [Header("Visual")]
     [SerializeField] private Vector2 gridSize;
@@ -72,7 +60,7 @@ public class GraphGenerator : MonoBehaviour
             {
                 ApplyRandomSeed();
 
-                if(generateGoldenPath)
+                if(data.generateGoldenPath)
                     GenerateGoldenPath();
                 else
                     GenerateBranchingPath();
@@ -94,14 +82,14 @@ public class GraphGenerator : MonoBehaviour
     private void GenerateBranchingPath()
     {
         totalRoomCount = 0;
-        int pathRoomCount = Random.Range(pathRoomRange.x, pathRoomRange.y + 1);
+        int pathRoomCount = Random.Range(data.pathRoomRange.x, data.pathRoomRange.y + 1);
 
         Node startNode = GetStartNode();
         nextPosition = GetNextAvailablePosition(startNode);
 
         int roomCount = 0;
         int doorCount = startNode.DoorCount - 1;
-        GenerateRoomRecurring(startNode, nextPosition, pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecurring(startNode, nextPosition, data.pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
 
         Debug.Log($"Generated {totalRoomCount} rooms");
     }
@@ -109,21 +97,21 @@ public class GraphGenerator : MonoBehaviour
     private void GenerateGoldenPath()
     {
         totalRoomCount = 0;
-        int goldenPathRoomCount = Random.Range(goldenPathRoomRange.x, goldenPathRoomRange.y + 1);
+        int goldenPathRoomCount = Random.Range(data.goldenPathRoomRange.x, data.goldenPathRoomRange.y + 1);
 
         Node startNode = GetStartNode();
         finalStartNode = startNode;
         nextPosition = GetNextAvailablePosition(startNode);
 
-        int availableSidePaths = sidePathsNumber;
-        int sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
+        int availableSidePaths = data.sidePathsNumber;
+        int sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, data.sidePathsNumber - availableSidePaths);
         bool lockNextDoor = false;
         int secretRoomIndex = Random.Range(0, goldenPathRoomCount / 2);
 
         Node lastNode = startNode;
         for (int i = 0; i < goldenPathRoomCount; ++i)
         {
-            bool shouldCreateSidePath = sidePathsNumber > 0 && availableSidePaths > 0 && i >= sidePathBranchRoom;
+            bool shouldCreateSidePath = data.sidePathsNumber > 0 && availableSidePaths > 0 && i >= sidePathBranchRoom;
             bool shouldCreateSecret = i >= secretRoomIndex;
 
             Node node = new Node(lastNode, shouldCreateSidePath ? 3 : 2, RoomType.GOLDEN_PATH);
@@ -140,7 +128,7 @@ public class GraphGenerator : MonoBehaviour
             {
                 availableSidePaths--;
                 GenerateSidePath(node);
-                sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, sidePathsNumber - availableSidePaths);
+                sidePathBranchRoom = GetNextSidePathBranchRoom(goldenPathRoomCount, data.sidePathsNumber - availableSidePaths);
             }
 
             if (shouldCreateSecret)
@@ -161,9 +149,9 @@ public class GraphGenerator : MonoBehaviour
 
     private int GetNextSidePathBranchRoom(int totalPathRoomCount, int currentSection)
     {
-        if (sidePathsNumber <= 0) return -1;
+        if (data.sidePathsNumber <= 0) return -1;
         
-        int sectionRoomCount = totalPathRoomCount / sidePathsNumber;
+        int sectionRoomCount = totalPathRoomCount / data.sidePathsNumber;
         int min = Mathf.Clamp(sectionRoomCount * currentSection, 1, totalPathRoomCount - 1);
         int max = Mathf.Min(sectionRoomCount * (currentSection + 1), totalPathRoomCount - 1);
         return Random.Range(min, max + 1);
@@ -171,7 +159,7 @@ public class GraphGenerator : MonoBehaviour
 
     private void GenerateSidePath(Node startNode)
     {
-        int maxSideRoomCount = Random.Range(sidePathRoomRange.x, sidePathRoomRange.y + 1);
+        int maxSideRoomCount = Random.Range(data.sidePathRoomRange.x, data.sidePathRoomRange.y + 1);
 
         Node node = new Node(startNode, Random.Range(Mathf.Min(2, maxSideRoomCount), Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
         var lastConnection = startNode.Connect(node);
@@ -181,7 +169,7 @@ public class GraphGenerator : MonoBehaviour
         int roomCount = 0;
         int doorCount = node.DoorCount - 1;
 
-        GenerateRoomRecurring(node, nextPosition, sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecurring(node, nextPosition, data.sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
 
         nextPosition = GetNextAvailablePosition(startNode);
         //Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");

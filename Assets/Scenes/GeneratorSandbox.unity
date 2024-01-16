@@ -293,11 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f071ce77d937384aa9f8b5c1689bec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generateGoldenPath: 1
-  goldenPathRoomRange: {x: 13, y: 20}
-  sidePathRoomRange: {x: 5, y: 12}
-  sidePathsNumber: 2
-  pathRoomRange: {x: 0, y: 0}
+  data: {fileID: 11400000, guid: 9c05d7a0603c34049a0c1a75daad93da, type: 2}
   gridSize: {x: 13, y: 9}
   roomsList: {fileID: 11400000, guid: fe5421ce9a4609d4a9a737b986d0322e, type: 2}
   lineRendererPrefab: {fileID: 6975423702747079872, guid: 8d60b07731bfbc94ab56f52fd25d1c1e,
