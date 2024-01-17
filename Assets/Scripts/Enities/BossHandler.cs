@@ -11,10 +11,15 @@ public class BossHandler : MonoBehaviour
     [SerializeField] private int maxSpawnAmount;
     [SerializeField] private float spawnInterval = 3f;
 
+    [SerializeField] private List<BossPlug> bossPlugList;
     private int spawnedAmount;
 
     private void Start()
     {
+        for (int i = 0; i < bossPlugList.Count; i++)
+        {
+            bossPlugList[i].onDestroy.AddListener(PlugDestroyed);
+        }
         SetState(BossState.SPAWNING);
     }
 
@@ -61,6 +66,16 @@ public class BossHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(spawnInterval);
         SetState(BossState.SPAWNING);
+    }
+
+    private void PlugDestroyed(BossPlug obj)
+    {
+        bossPlugList.Remove(obj);
+
+        if(bossPlugList.Count <= 0)
+        {
+            Debug.Log("can take damage");
+        }
     }
 }
 
