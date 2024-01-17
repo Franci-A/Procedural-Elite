@@ -87,9 +87,7 @@ public class GraphGenerator : MonoBehaviour
         Node startNode = GetStartNode();
         nextPosition = GetNextAvailablePosition(startNode);
 
-        int roomCount = 0;
-        int doorCount = startNode.DoorCount - 1;
-        GenerateRoomRecursive(startNode, nextPosition, data.pathRoomRange.x, pathRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecursive(startNode, nextPosition, data.pathRoomRange.x, pathRoomCount);
         
         var lastNode = GetDeepestNode(startNode);
         {
@@ -102,7 +100,7 @@ public class GraphGenerator : MonoBehaviour
         }
         var endNode = GetEndNode(lastNode, GetNextAvailablePosition(lastNode));
 
-        Debug.Log($"Generated {totalRoomCount} rooms");
+        Debug.Log($"Generated {totalRoomCount} rooms from `roomCount` {pathRoomCount}");
     }
 
     private void GenerateGoldenPath()
@@ -177,57 +175,64 @@ public class GraphGenerator : MonoBehaviour
         PlaceNode(node, nextPosition);
         nextPosition = GetNextAvailablePosition(node);
 
-        int roomCount = 0;
-        int doorCount = node.DoorCount - 1;
-
-        GenerateRoomRecursive(node, nextPosition, data.sidePathRoomRange.x, maxSideRoomCount, ref roomCount, ref doorCount);
+        GenerateRoomRecursive(node, nextPosition, data.sidePathRoomRange.x, maxSideRoomCount);
 
         nextPosition = GetNextAvailablePosition(startNode);
         //Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");
     }
 
-    private void GenerateRoomRecursive(Node parentNode, Vector2 position, int minRoomCount, int maxRoomCount, ref int roomCount, ref int doorCount)
+    private void GenerateRoomRecursive(Node startNode, Vector2 position, int minRoomCount, int maxRoomCount)
     {
-        roomCount++;
-        doorCount += parentNode.DoorCount - 1;
+        if (maxRoomCount <= 0) return;
 
-        while (parentNode.DoorCount > parentNode.Connections.Count)
+        int roomCount = 0;
+        int doorCount = startNode.DoorCount - 1;
+        int initialDepth = startNode.Depth;
+
+        void GenerateNextRoomRecursive(Node parentNode, Vector2 position, int minRoomCount, int maxRoomCount)
         {
-            int minRandomRange = 1;
-            int maxRandomRange = 5;
+            roomCount++;
+            doorCount += parentNode.DoorCount - 1;
 
-            if (doorCount >= maxRoomCount - 1)
+
+            while (parentNode.DoorCount > parentNode.Connections.Count)
             {
-                minRandomRange = 1;
-                maxRandomRange = 2;
+                int minRandomRange = 1;
+                int maxRandomRange = 5;
+
+                if (doorCount >= maxRoomCount - 1)
+                {
+                    maxRandomRange = 2;
+                }
+                else if (doorCount < minRoomCount - 1)
+                {
+                    minRandomRange = 2;
+                }
+
+                int nextDoorCount = Random.Range(minRandomRange, maxRandomRange);
+                if (doorCount + nextDoorCount >= maxRoomCount)
+                    nextDoorCount = maxRoomCount - doorCount;
+
+                // Create a new node at this position
+                // Connected to parentNode
+                Node nextNode = new Node(parentNode, nextDoorCount, RoomType.SIDE_PATH);
+                parentNode.Connect(nextNode);
+                PlaceNode(nextNode, position);
+
+                // Generate needed rooms from the new node,
+                // sending the Next Available Position around this new node
+                GenerateNextRoomRecursive(nextNode, GetNextAvailablePosition(nextNode), minRoomCount, maxRoomCount);
+
+                // Stop if all the connections are complete
+                if (parentNode.DoorCount <= parentNode.Connections.Count)
+                    return;
+
+                // Update the Next Available Position around the parent Node
+                position = GetNextAvailablePosition(parentNode);
             }
-            else if (roomCount < minRoomCount)
-            {
-                minRandomRange = 2;
-                maxRandomRange = 4;
-            }
-
-            int nextDoorCount = Random.Range(minRandomRange, maxRandomRange);
-            if (doorCount + nextDoorCount >= maxRoomCount)
-                nextDoorCount = maxRoomCount - doorCount;
-
-            // Create a new node at this position
-            // Connected to parentNode
-            Node nextNode = new Node(parentNode, nextDoorCount, RoomType.SIDE_PATH);
-            parentNode.Connect(nextNode);
-            PlaceNode(nextNode, position);
-
-            // Generate needed rooms from the new node,
-            // sending the Next Available Position around this new node
-            GenerateRoomRecursive(nextNode, GetNextAvailablePosition(nextNode), minRoomCount, maxRoomCount, ref roomCount, ref doorCount);
-
-            // Stop if all the connections are complete
-            if (parentNode.DoorCount <= parentNode.Connections.Count)
-                return;
-
-            // Update the Next Available Position around the parent Node
-            position = GetNextAvailablePosition(parentNode);
         }
+
+        GenerateNextRoomRecursive(startNode, position, minRoomCount, maxRoomCount);
     }
 
     private Node GetStartNode()
