@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ExplodeProjectile : MonoBehaviour
 {
+    [SerializeField] private WeaponsHolder weapons;
     [SerializeField] private float startSize;
-    [SerializeField] private float endSize;
+    private float endSize;
     [SerializeField] private float scaleTime = .5f;
     private float timer = 0;
 
     void Start()
     {
+        endSize = weapons.GetCurrentThreshold().mageExplosionSize;
         transform.localScale = new Vector3(startSize, startSize);
     }
 
