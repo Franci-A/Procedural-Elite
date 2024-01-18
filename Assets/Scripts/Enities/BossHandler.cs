@@ -20,6 +20,7 @@ public class BossHandler : MonoBehaviour
         {
             bossPlugList[i].onDestroy.AddListener(PlugDestroyed);
         }
+        attack.canBeHit = false;
         SetState(BossState.SPAWNING);
     }
 
@@ -45,7 +46,7 @@ public class BossHandler : MonoBehaviour
         spawnedAmount = Random.Range(maxSpawnAmount, minSpawnAmount);
         for (int i = 0; i < spawnedAmount; i++)
         {
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.5f);
            Instantiate<Enemy>(enemyList[Random.Range(0, enemyList.Count)], transform.position, Quaternion.identity).onDied.AddListener(SpawnedEnemyDied);
         }
 
@@ -57,6 +58,8 @@ public class BossHandler : MonoBehaviour
         spawnedAmount--;
         if(spawnedAmount <= 0)
         {
+            if (!attack.canBeHit)
+                return;
             spawnedAmount = 0;
             StartCoroutine(SpawnCooldown());
         }
@@ -74,7 +77,9 @@ public class BossHandler : MonoBehaviour
 
         if(bossPlugList.Count <= 0)
         {
-            Debug.Log("can take damage");
+            attack.canBeHit = true;
+            StopAllCoroutines();
+            SetState(BossState.ATTACK);
         }
     }
 }
