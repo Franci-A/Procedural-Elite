@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8873002785969428038}
   - component: {fileID: 5585554243489130131}
+  - component: {fileID: 8665469101454900841}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -73,9 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: e3aad2cbd23c4194693afcf2740408c7,
-    type: 3}
-  m_Color: {r: 1, g: 0.6718399, b: 0.2783019, a: 1}
+  m_Sprite: {fileID: -818041094, guid: 0737ca5e59e095d449140845807c29d7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,6 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8665469101454900841
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270879035601758932}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8fa1d69e91aa05641ab0a657dc2e226c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1303641006189588902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93,6 +114,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1997172998882914159, guid: fedea07bedcd0dc4b8633fc878bfdc59,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a0f39f12926a2d34d918e730e67f7620, type: 2}
     - target: {fileID: 2185964762067344080, guid: fedea07bedcd0dc4b8633fc878bfdc59,
         type: 3}
       propertyPath: m_Name
@@ -167,6 +193,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2185964762067344108, guid: fedea07bedcd0dc4b8633fc878bfdc59, type: 3}
     - {fileID: 2185964762067344109, guid: fedea07bedcd0dc4b8633fc878bfdc59, type: 3}
+    - {fileID: 1997172998882914159, guid: fedea07bedcd0dc4b8633fc878bfdc59, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2185964762067344082, guid: fedea07bedcd0dc4b8633fc878bfdc59,
@@ -208,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapons: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
-  endSize: 1.4
+  startSize: 0
   scaleTime: 0.3
 --- !u!58 &2363245741641730693
 CircleCollider2D:
