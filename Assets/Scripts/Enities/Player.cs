@@ -420,4 +420,12 @@ public class Player : MonoBehaviour {
     {
         renderer.sprite = weaponsHolder.GetPlayerSprite();
     }
+
+    public void TpToBoss(GameObject bossRoom)
+    {
+        var newCoordonate = new Vector3(1000, 0, 0);
+        Instantiate(bossRoom, newCoordonate, Quaternion.identity);
+        transform.position = newCoordonate + new Vector3(7,4,0);
+        Camera.main.transform.position = newCoordonate + new Vector3(7, 4, -10);
+    }
 }
