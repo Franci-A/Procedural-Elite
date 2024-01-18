@@ -48,15 +48,15 @@ MonoBehaviour:
     - expNeeded: 4
       attackDamage: 1
       attackCooldown: 1
-      mageExplosionSize: 1
+      mageExplosionSize: 0.8
     - expNeeded: 12
       attackDamage: 2
       attackCooldown: 0.8
-      mageExplosionSize: 1.5
+      mageExplosionSize: 1
     - expNeeded: 22
       attackDamage: 2
       attackCooldown: 0.5
-      mageExplosionSize: 0
+      mageExplosionSize: 1.2
   playerExp: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
   OnClassChanged:
     m_PersistentCalls:

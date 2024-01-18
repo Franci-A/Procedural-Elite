@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
     private float _lastHitTime = float.MinValue;
     private List<SpriteRenderer> _spriteRenderers = new List<SpriteRenderer>();
     private Coroutine _blinkCoroutine = null;
-
+    public bool canBeHit = true;
 
     // Movement attributes
     [Header("Movement")]
@@ -348,6 +348,9 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!canBeHit)
+            return;
+
         if ((hitLayers & (1 << collision.gameObject.layer)) == (1 << collision.gameObject.layer))
         {
             // Collided with hitbox
