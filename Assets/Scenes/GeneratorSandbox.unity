@@ -298,7 +298,7 @@ MonoBehaviour:
   roomsList: {fileID: 11400000, guid: fe5421ce9a4609d4a9a737b986d0322e, type: 2}
   lineRendererPrefab: {fileID: 6975423702747079872, guid: 8d60b07731bfbc94ab56f52fd25d1c1e,
     type: 3}
-  loopBreakIterationCount: 250
+  loopBreakIterationCount: 20000
   randomSeed: 643
   spawnPlaceholderRoomPrefab: 0
   placeholderRoomPrefab: {fileID: 6076516581961082644, guid: 18f1f03e63e63674eb1356f47670efdb,
