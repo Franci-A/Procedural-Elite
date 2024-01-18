@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04960089eb69ba4a805613513d398c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossRoom: {fileID: 4167186206395494075, guid: f93648dd4c63859428954813fcd11a4e,
+  bossRoom: {fileID: 4167186206395494075, guid: 81e9a4a667694a44c9d49da87d114727,
     type: 3}
 --- !u!95 &1742215395475485967
 Animator:
