@@ -41,6 +41,11 @@ public class RopeHandler : MonoBehaviour
     {
         for (int i = 0; i < ropePoints.Count; i++)
         {
+            if (ropePoints[i] == null)
+            {
+                ropePoints.RemoveAt(i);
+                return;
+            }
             ropeVisual.SetPosition(i, ropePoints[i].position);
         }
     }
