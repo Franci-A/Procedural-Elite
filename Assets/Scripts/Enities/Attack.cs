@@ -59,4 +59,13 @@ public class Attack : MonoBehaviour {
 			onHit?.Invoke();
 		}
 	}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+		if(((1 << collision.gameObject.layer) & destroyOnHit) != 0)
+		{
+			GameObject.Destroy(gameObject);
+			onHit?.Invoke();
+		}
+	}
 }

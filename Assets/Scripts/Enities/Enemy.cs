@@ -91,7 +91,6 @@ public class Enemy : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         GetComponentsInChildren<SpriteRenderer>(true, _spriteRenderers);
 		allEnemies.Add(this);
-
 	}
 
 	private void OnDestroy()
@@ -172,7 +171,7 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// Changes current state to a new given state. Instructions related to exiting and entering a state should be coded in the two "switch(_state){...}" of this method.
     /// </summary>
-    private void SetState(STATE state)
+    public void SetState(STATE state)
     {
         // Exit previous state
         // switch (_state)
