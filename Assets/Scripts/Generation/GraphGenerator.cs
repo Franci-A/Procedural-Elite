@@ -420,27 +420,25 @@ public class GraphGenerator : MonoBehaviour
             {
                 GameObject newRoom = roomsList.GetRoom(nodeOrientation, node.Type);
 
-                Room room = null;
                 if (newRoom != null)
                 {
                     // je retire gridsize / 2 car l'origine des rooms est en 0,0
-                    room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform).GetComponent<Room>();
+                    Room room = Instantiate(newRoom, node.Position * gridSize - (gridSize / 2), Quaternion.identity, transform).GetComponent<Room>();
                     room.Position = new Vector2Int((int)node.Position.x, (int)node.Position.y);
-                    if (node.NodeId == 0)
-                    {
-                        room.isStartRoom = true;
-                    }
-                    else room.isStartRoom = false;
+
+                    room.isStartRoom = node.NodeId == 0;
 
                     foreach (var connection in node.Connections)
                     {
+                        if (!connection.IsLocked && !connection.IsSecret)
+                            continue;
+
+                        Door door = room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position);
+                        
                         if (connection.IsLocked)
-                        {
-                            room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position).SetState(Door.STATE.CLOSED);
-                        }else if(connection.IsSecret) 
-                        {
-                            room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position).SetState(Door.STATE.SECRET);
-                        }
+                            door.SetState(Door.STATE.CLOSED);
+                        else if(connection.IsSecret) 
+                            door.SetState(Door.STATE.SECRET);
                     }
                 }
                 else InstantiateRoomPlaceholder(node);
