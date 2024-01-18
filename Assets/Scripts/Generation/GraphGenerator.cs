@@ -282,7 +282,7 @@ public class GraphGenerator : MonoBehaviour
         var secretNode = new Node(parentNode, 1, RoomType.SECRET);
         var connection = parentNode.Connect(secretNode);
         connection.SetSecret(true);
-        connection.SetLocked(true);
+        //connection.SetLocked(true);
 
         PlaceNode(secretNode, position);
         nextPosition = GetNextAvailablePosition(parentNode);
@@ -437,6 +437,9 @@ public class GraphGenerator : MonoBehaviour
                         if (connection.IsLocked)
                         {
                             room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position).SetState(Door.STATE.CLOSED);
+                        }else if(connection.IsSecret) 
+                        {
+                            room.GetDoor(connection.GetOrientation(node), room.gameObject.transform.position).SetState(Door.STATE.SECRET);
                         }
                     }
                 }

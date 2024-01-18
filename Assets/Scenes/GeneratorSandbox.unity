@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &286230966 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1308980700023162050, guid: 48b951f6371abd1499afed75415bdb10,
+    type: 3}
+  m_PrefabInstance: {fileID: 7442550172145367687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &912715245
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,6 +780,7 @@ MonoBehaviour:
   minSpawnAmount: 2
   maxSpawnAmount: 5
   spawnInterval: 3
+  bossPlugList: []
 --- !u!1 &980773780856177308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,7 +1113,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1308980700023162050, guid: 48b951f6371abd1499afed75415bdb10,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5460130847454719549}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48b951f6371abd1499afed75415bdb10, type: 3}
 --- !u!1 &8048234922606956334
@@ -1236,7 +1247,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 286230966}
     m_Modifications:
     - target: {fileID: 2575300834879446115, guid: e73bfa19d31a09d44b685cbec0c77568,
         type: 3}
@@ -1246,12 +1257,12 @@ PrefabInstance:
     - target: {fileID: 8978187573991367295, guid: e73bfa19d31a09d44b685cbec0c77568,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 8978187573991367295, guid: e73bfa19d31a09d44b685cbec0c77568,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.55
       objectReference: {fileID: 0}
     - target: {fileID: 8978187573991367295, guid: e73bfa19d31a09d44b685cbec0c77568,
         type: 3}
@@ -1326,4 +1337,3 @@ SceneRoots:
   - {fileID: 1961912309}
   - {fileID: 2726490488966818366}
   - {fileID: 7442550172145367687}
-  - {fileID: 8934988588912705978}
