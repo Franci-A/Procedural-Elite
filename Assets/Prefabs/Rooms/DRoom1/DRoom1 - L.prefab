@@ -707,84 +707,76 @@ MonoBehaviour:
       showTileWithPrefab: 1
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 227003945270914262}
-  - tilePos: 304
+  - tilePos: 0
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
-    obj: {fileID: 2582671059779032794}
-  - tilePos: 244
+    obj: {fileID: 0}
+  - tilePos: 0
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
-    obj: {fileID: 5687775195233916346}
+    obj: {fileID: 0}
   - tilePos: 184
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 9075154570985070184}
   - tilePos: 185
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 8980258576099680057}
   - tilePos: 186
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 5340538167054357461}
   - tilePos: 248
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 7040283082966882043}
   - tilePos: 246
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 3550555300940063888}
   - tilePos: 245
     tilePrefabData:
-      prefab: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-        type: 3}
+      prefab: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 7086557030586411121}
   - tilePos: 307
@@ -794,7 +786,7 @@ MonoBehaviour:
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
-      showTileWithPrefab: 1
+      showTileWithPrefab: 0
       showPrefabPreviewInTilePalette: 0
     obj: {fileID: 3252585686187735745}
   - tilePos: 240
@@ -1347,12 +1339,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3058888354864573298}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5687775195233916346 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3058888354864573298}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3251821580891582413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1861,12 +1847,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 780d3c292fcda5e498755efe93cf622a, type: 3}
---- !u!1 &2582671059779032794 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7249761477647285960, guid: 780d3c292fcda5e498755efe93cf622a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5137250386552662034}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9041674363463151648 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4193226117228763186, guid: 780d3c292fcda5e498755efe93cf622a,
