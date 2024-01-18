@@ -17,6 +17,7 @@ public class GraphGenerator : MonoBehaviour
     [SerializeField] private int randomSeed;
     [SerializeField] private bool spawnPlaceholderRoomPrefab;
     [SerializeField, ShowIf(nameof(spawnPlaceholderRoomPrefab))] GameObject placeholderRoomPrefab;
+    [SerializeField] private bool debugCatchExceptionsInConsole;
 
     List<Vector2> positions = new List<Vector2>();
     List<GameObject> listLine = new List<GameObject>();
@@ -71,7 +72,8 @@ public class GraphGenerator : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                //Debug.LogError(e);
+                if(debugCatchExceptionsInConsole)
+                    Debug.LogError(e);
                 Restart();
             }
         }

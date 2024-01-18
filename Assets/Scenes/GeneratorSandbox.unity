@@ -303,6 +303,7 @@ MonoBehaviour:
   spawnPlaceholderRoomPrefab: 0
   placeholderRoomPrefab: {fileID: 6076516581961082644, guid: 18f1f03e63e63674eb1356f47670efdb,
     type: 3}
+  debugCatchExceptionsInConsole: 0
 --- !u!4 &1156883890
 Transform:
   m_ObjectHideFlags: 0
