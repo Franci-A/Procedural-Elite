@@ -375,7 +375,7 @@ MonoBehaviour:
   m_tilemaps:
   - {fileID: 5446873782366247807}
   - {fileID: 1426011269217010653}
-  m_selectedIndex: 1
+  m_selectedIndex: 0
   m_unselectedColorMultiplier: 1
   m_defaultTilemapWindowVisible: 0
   m_displayTilemapRList: 1
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 9040164954729615916}
   - component: {fileID: 1749642526827263854}
   - component: {fileID: 8448352759789721671}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 0_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
