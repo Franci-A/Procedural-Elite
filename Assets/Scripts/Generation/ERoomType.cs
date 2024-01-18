@@ -5,5 +5,6 @@ public enum RoomType
     END = 2,
     SECRET = 3,
     GOLDEN_PATH = 4,
-    SIDE_PATH = 5
+    SIDE_PATH = 5,
+    KEY = 6
 }

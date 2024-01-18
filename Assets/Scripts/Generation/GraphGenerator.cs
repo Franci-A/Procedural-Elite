@@ -171,14 +171,13 @@ public class GraphGenerator : MonoBehaviour
         int maxSideRoomCount = Random.Range(data.sidePathRoomRange.x, data.sidePathRoomRange.y + 1);
 
         Node node = new Node(startNode, Random.Range(Mathf.Min(2, maxSideRoomCount), Mathf.Min(4, maxSideRoomCount) + 1), RoomType.SIDE_PATH);
-        var lastConnection = startNode.Connect(node);
+        startNode.Connect(node);
         PlaceNode(node, nextPosition);
-        nextPosition = GetNextAvailablePosition(node);
 
-        GenerateRoomRecursive(node, nextPosition, data.sidePathRoomRange.x, maxSideRoomCount);
-
+        GenerateRoomRecursive(node, GetNextAvailablePosition(node), data.sidePathRoomRange.x, maxSideRoomCount);
         nextPosition = GetNextAvailablePosition(startNode);
-        //Debug.Log($"Side Path generated Node {startNode.NodeId} with {roomCount} rooms.");
+
+        TagKeyRoomInBranch(node);
     }
 
     private void GenerateRoomRecursive(Node startNode, Vector2 position, int minRoomCount, int maxRoomCount)
@@ -287,6 +286,12 @@ public class GraphGenerator : MonoBehaviour
 
         PlaceNode(secretNode, position);
         nextPosition = GetNextAvailablePosition(parentNode);
+    }
+
+    private void TagKeyRoomInBranch(Node startNode)
+    {
+        var keyNode = GetDeepestNode(startNode);
+        keyNode.SetType(RoomType.KEY);
     }
 
     private void DebugConnectedNodes(Node parentNode)
@@ -402,7 +407,7 @@ public class GraphGenerator : MonoBehaviour
                 if (!clostList.Contains(connection.To))
                 {
                     openList.Add(connection.To);
-                    if(spawnPlaceholderRoomPrefab)LinkNodes(connection);
+                    if (spawnPlaceholderRoomPrefab) LinkNodes(connection);
                 }
                 nodeOrientation.Add(connection.GetOrientation(node));
             }
@@ -436,10 +441,8 @@ public class GraphGenerator : MonoBehaviour
                     }
                 }
                 else InstantiateRoomPlaceholder(node);
-
-
             }
-                openList.RemoveAt(0);
+            openList.RemoveAt(0);
         }
     }
 }
