@@ -8,11 +8,9 @@ public class RopeHandler : MonoBehaviour
     [SerializeField] private int numberOfPoints = 3;
     private List<Transform> ropePoints;
     [SerializeField] private LineRenderer ropeVisual;
-    [SerializeField] private BossHandler boss;
     [SerializeField] private AnimationCurve positionOffsetCurve;
-    [SerializeField] private BossPlug attackedPlug;
 
-    private void Start()
+    public void Init(BossHandler boss ,BossPlug attackedPlug)
     {
         attackedPlug.onDestroy.AddListener(PlugDestroyed);
         ropePoints = new List<Transform>();
@@ -21,7 +19,7 @@ public class RopeHandler : MonoBehaviour
         {
             float t = (i + 1f) / (numberOfPoints + 2f);
             Vector2 bossPlugVec = boss.transform.position - attackedPlug.transform.position;
-            if (boss.transform.position.x < transform.parent.position.x)
+            if (boss.transform.position.x < attackedPlug.transform.position.x)
                 bossPlugVec = attackedPlug.transform.position - boss.transform.position;
             Vector2 perpendicularOffset = Vector2.Perpendicular(bossPlugVec) * positionOffsetCurve.Evaluate(t);
 

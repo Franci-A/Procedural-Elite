@@ -9,6 +9,13 @@ public class BossPlug : MonoBehaviour
     public LayerMask hitLayers;
     public UnityEvent<BossPlug> onDestroy;
     private bool isActive = true;
+    [SerializeField] private BossHandler bossInstance;
+    [SerializeField] private RopeHandler ropePrefab;
+
+    private void Start()
+    {
+        Instantiate<RopeHandler>(ropePrefab, transform.position, Quaternion.identity).Init(bossInstance, this);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

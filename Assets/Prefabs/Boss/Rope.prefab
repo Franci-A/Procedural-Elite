@@ -74,6 +74,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  attackedPlug: {fileID: 0}
 --- !u!120 &2555320752329706775
 LineRenderer:
   serializedVersion: 2
