@@ -35,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemies()
     {
+        alreadySpawned = true;
         enemiesAlive = UnityEngine.Random.Range(expSpawnAmounts[index].minSpawnPerWave, expSpawnAmounts[index].maxSpawnPerWave);
         if (enemiesAlive > enemyToSpawn)
             enemiesAlive = enemyToSpawn;
