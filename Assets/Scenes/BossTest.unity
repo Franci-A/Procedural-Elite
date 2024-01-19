@@ -502,7 +502,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1276168953}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7366223554274046699, guid: 7aa0b1d070761444daaa8930e6ae7a6d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 674108116}
   m_SourcePrefab: {fileID: 100100000, guid: 7aa0b1d070761444daaa8930e6ae7a6d, type: 3}
 --- !u!114 &674108113 stripped
 MonoBehaviour:
@@ -522,6 +526,88 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 674108112}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &674108115 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7366223554274046699, guid: 7aa0b1d070761444daaa8930e6ae7a6d,
+    type: 3}
+  m_PrefabInstance: {fileID: 674108112}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &674108116
+EdgeCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674108115}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 13, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 9}
+  - {x: 6, y: 9}
+  - {x: 6, y: 8}
+  - {x: 4, y: 8}
+  - {x: 4, y: 7}
+  - {x: 3, y: 7}
+  - {x: 3, y: 6}
+  - {x: 2, y: 6}
+  - {x: 2, y: 5}
+  - {x: 1, y: 5}
+  - {x: 1, y: 4}
+  - {x: 2, y: 4}
+  - {x: 2, y: 3}
+  - {x: 3, y: 3}
+  - {x: 3, y: 2}
+  - {x: 4, y: 2}
+  - {x: 4, y: 1}
+  - {x: 9, y: 1}
+  - {x: 9, y: 2}
+  - {x: 10, y: 2}
+  - {x: 10, y: 3}
+  - {x: 11, y: 3}
+  - {x: 11, y: 4}
+  - {x: 12, y: 4}
+  - {x: 12, y: 5}
+  - {x: 11, y: 5}
+  - {x: 11, y: 6}
+  - {x: 10, y: 6}
+  - {x: 10, y: 7}
+  - {x: 9, y: 7}
+  - {x: 9, y: 8}
+  - {x: 7, y: 8}
+  - {x: 7, y: 9}
+  - {x: 13, y: 9}
+  - {x: 13, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1001 &749236190
 PrefabInstance:
   m_ObjectHideFlags: 0

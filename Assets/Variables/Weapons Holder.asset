@@ -20,19 +20,19 @@ MonoBehaviour:
     playerImage: {fileID: 21300000, guid: 8a82b782276687946bc7990692c8f0d5, type: 3}
     thresholds:
     - expNeeded: 0
-      attackDamage: 1
+      attackDamage: 2
       attackCooldown: 2
       mageExplosionSize: 0
     - expNeeded: 4
-      attackDamage: 1
+      attackDamage: 2
       attackCooldown: 1
       mageExplosionSize: 0
     - expNeeded: 12
-      attackDamage: 2
+      attackDamage: 3
       attackCooldown: 0.8
       mageExplosionSize: 0
     - expNeeded: 22
-      attackDamage: 3
+      attackDamage: 4
       attackCooldown: 0.5
       mageExplosionSize: 0
   - index: 1
@@ -61,3 +61,4 @@ MonoBehaviour:
   OnClassChanged:
     m_PersistentCalls:
       m_Calls: []
+  isSpecialActive: 0
