@@ -13,6 +13,7 @@ public class GraphGenerator : MonoBehaviour
     private Node finalStartNode;
 
     [Header("Security & Debug")]
+    [SerializeField, Tag] private string playerTag;
     [SerializeField] private int loopBreakIterationCount = 20000;
     [SerializeField] private bool useSeed;
     [SerializeField, ShowIf(nameof(useSeed))] private int randomSeed;
@@ -26,6 +27,19 @@ public class GraphGenerator : MonoBehaviour
     private int totalRoomCount;
 
     private bool IsApplicationRunning { get => Application.isPlaying; }
+    private string InversePlayerTag
+    {
+        get
+        {
+            if (playerTag == ROOM_TAG_MELEE)
+                return ROOM_TAG_DISTANCE;
+
+            return ROOM_TAG_MELEE;
+        }
+    }
+
+    const string ROOM_TAG_MELEE = "Room_Melee";
+    const string ROOM_TAG_DISTANCE = "Room_Distance";
 
     void Start()
     {
@@ -422,7 +436,10 @@ public class GraphGenerator : MonoBehaviour
             }
             else
             {
-                GameObject newRoom = roomsList.GetRoom(nodeOrientation, node.Type);
+                GameObject newRoom = roomsList.GetRoom(
+                    nodeOrientation,
+                    node.Type,
+                    ShouldCheckRoomTag(node.Type) ? InversePlayerTag : string.Empty);
 
                 if (newRoom != null)
                 {
@@ -449,5 +466,12 @@ public class GraphGenerator : MonoBehaviour
             }
             openList.RemoveAt(0);
         }
+    }
+
+    private bool ShouldCheckRoomTag(RoomType roomType)
+    {
+        return roomType == RoomType.GOLDEN_PATH
+            || roomType == RoomType.SIDE_PATH
+            || roomType == RoomType.KEY;
     }
 }

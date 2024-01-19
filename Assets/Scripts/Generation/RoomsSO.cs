@@ -10,7 +10,7 @@ public class RoomsSO : ScriptableObject
     public List<Room> endingRooms;
     public List<Room> secretRooms;
 
-    public GameObject GetRoom(List<Utils.ORIENTATION> orientations, RoomType roomType)
+    public GameObject GetRoom(List<Utils.ORIENTATION> orientations, RoomType roomType, string tag)
     {
         List<Room> roomsList = new List<Room>();
         List<Room> currentRoomList = roomType switch
@@ -24,7 +24,11 @@ public class RoomsSO : ScriptableObject
 
         foreach (var room in currentRoomList)
         {
-            if(CheckRoomsOrientation(room.Orientation, orientations)) roomsList.Add(room);
+            if (!CheckRoomsOrientation(room.Orientation, orientations)) continue;
+            if (!string.IsNullOrEmpty(tag))
+                if (!room.CompareTag(tag)) continue;
+
+            roomsList.Add(room);
         }
 
         if (roomsList.Count == 0) return null;
