@@ -105,6 +105,7 @@ public class Player : MonoBehaviour {
     {
         SetState(STATE.IDLE);
         OnChangeClass();
+        weaponsHolder.isSpecialActive = false;
         weaponsHolder.OnClassChanged.AddListener(OnChangeClass);
     }
 
