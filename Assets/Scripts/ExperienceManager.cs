@@ -43,9 +43,9 @@ public class ExperienceManager : MonoBehaviour
                 
             playerLastLevel.SetValue((int)weaponsHolder.GetWeapon().thresholds[currentThresholdIndex].expNeeded + 1);
         currentThresholdIndex++;
+        currentThresholdIndex = Mathf.Clamp(currentThresholdIndex, 0, weaponsHolder.GetWeapon().thresholds.Count -1);
             playerNextLevel.SetValue((int)weaponsHolder.GetWeapon().thresholds[currentThresholdIndex].expNeeded);
 
-        currentThresholdIndex = Mathf.Clamp(currentThresholdIndex, 0, weaponsHolder.GetWeapon().thresholds.Count -1);
 
         playerExp.SetValue(expLevel);
     }
