@@ -13,6 +13,7 @@ public class BossHandler : MonoBehaviour
 
     [SerializeField] private List<BossPlug> bossPlugList;
     private int spawnedAmount;
+    [SerializeField] GameObject shield;
 
     private void Start()
     {
@@ -21,6 +22,7 @@ public class BossHandler : MonoBehaviour
             bossPlugList[i].onDestroy.AddListener(PlugDestroyed);
         }
         attack.canBeHit = false;
+        shield.SetActive(true);
         SetState(BossState.SPAWNING);
     }
 
@@ -78,6 +80,7 @@ public class BossHandler : MonoBehaviour
         if(bossPlugList.Count <= 0)
         {
             attack.canBeHit = true;
+            shield.SetActive(false);
             StopAllCoroutines();
             SetState(BossState.ATTACK);
         }
