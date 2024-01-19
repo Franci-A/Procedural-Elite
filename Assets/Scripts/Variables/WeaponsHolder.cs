@@ -10,6 +10,7 @@ public class WeaponsHolder : ScriptableObject
     private int selectedIndex;
     public IntVariable playerExp;
     public UnityEvent OnClassChanged;
+    public bool isSpecialActive = false;
 
     public GameObject GetWeaponPrefab()
     {
@@ -64,6 +65,11 @@ public class WeaponsHolder : ScriptableObject
         selectedIndex++;
         selectedIndex = Mathf.FloorToInt(Mathf.Repeat(selectedIndex, weapons.Count));
         OnClassChanged?.Invoke();
+    }
+
+    public void SetSpecialActice(bool active)
+    {
+        isSpecialActive = active;
     }
 }
 
