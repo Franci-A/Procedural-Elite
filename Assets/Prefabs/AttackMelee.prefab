@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2185964762067344109}
   - component: {fileID: 1833291118246165548}
   - component: {fileID: 1997172998882914159}
+  - component: {fileID: 1790110238324621615}
   m_Layer: 8
   m_Name: AttackMelee
   m_TagString: Untagged
@@ -166,7 +167,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2185964762067344080}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -206,3 +207,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1790110238324621615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2185964762067344080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f071c57224a994fb1ff9d7ce2a9f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponsHolder: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  fireBall: {fileID: 1475230311155155286, guid: 465c3a493f9ce23459134253ed71946a,
+    type: 3}

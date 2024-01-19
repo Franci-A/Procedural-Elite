@@ -61,7 +61,7 @@ MonoBehaviour:
     minSpawnPerWave: 3
     maxSpawnPerWave: 5
   playerExp: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
-  spawnRadius: 1
+  spawnRadius: 0.5
 --- !u!1 &6375639489383203811
 GameObject:
   m_ObjectHideFlags: 0
