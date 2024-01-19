@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.83137256, g: 0.8295076, b: 0.17647056, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -215,6 +215,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerExp: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
+  playerLastLevel: {fileID: 11400000, guid: 6ad1f8591a8b8824b9291409ce5d5de8, type: 2}
+  playerNextLevel: {fileID: 11400000, guid: accdc932df388144fac720ca6443cade, type: 2}
   slider: {fileID: 3131682140859366591}
   weaponsHolder: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
 --- !u!1 &6723000667006236059
@@ -543,8 +545,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_AnchoredPosition: {x: -3.1197968, y: 0}
+  m_SizeDelta: {x: 13.7603, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4355453259501669402
 CanvasRenderer:
@@ -567,7 +569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.6658421, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

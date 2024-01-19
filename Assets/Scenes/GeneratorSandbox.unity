@@ -744,6 +744,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponsHolder: {fileID: 11400000, guid: 88e4bc4a942dac547a978d066a9b39f8, type: 2}
   playerExp: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
+  playerLastLevel: {fileID: 11400000, guid: 6ad1f8591a8b8824b9291409ce5d5de8, type: 2}
+  playerNextLevel: {fileID: 11400000, guid: accdc932df388144fac720ca6443cade, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
