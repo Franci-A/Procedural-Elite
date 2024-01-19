@@ -8,6 +8,8 @@ public class ExperienceManager : MonoBehaviour
     private int expLevel = 0;
     [SerializeField] private WeaponsHolder weaponsHolder;
     [SerializeField] private IntVariable playerExp;
+    [SerializeField] private IntVariable playerLastLevel;
+    [SerializeField] private IntVariable playerNextLevel;
     private int currentThresholdIndex = 0;
 
     private void Awake()
@@ -19,6 +21,8 @@ public class ExperienceManager : MonoBehaviour
         }
         instance = this;
         playerExp.SetValue(0);
+        playerLastLevel.SetValue(0);
+        playerNextLevel.SetValue(1);
         expLevel = 0;
     }
 
@@ -32,11 +36,17 @@ public class ExperienceManager : MonoBehaviour
             currentThresholdIndex = Mathf.Clamp(currentThresholdIndex, 0, weaponsHolder.GetWeapon().thresholds.Count -1);
         }
 
+        playerExp.SetValue(expLevel);
+
         if (expLevel < weaponsHolder.GetWeapon().thresholds[currentThresholdIndex].expNeeded)
             return;
                 
+            playerLastLevel.SetValue((int)weaponsHolder.GetWeapon().thresholds[currentThresholdIndex].expNeeded + 1);
         currentThresholdIndex++;
+            playerNextLevel.SetValue((int)weaponsHolder.GetWeapon().thresholds[currentThresholdIndex].expNeeded);
+
         currentThresholdIndex = Mathf.Clamp(currentThresholdIndex, 0, weaponsHolder.GetWeapon().thresholds.Count -1);
+
         playerExp.SetValue(expLevel);
     }
 }
