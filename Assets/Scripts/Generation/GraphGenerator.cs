@@ -14,7 +14,8 @@ public class GraphGenerator : MonoBehaviour
 
     [Header("Security & Debug")]
     [SerializeField] private int loopBreakIterationCount = 20000;
-    [SerializeField] private int randomSeed;
+    [SerializeField] private bool useSeed;
+    [SerializeField, ShowIf(nameof(useSeed))] private int randomSeed;
     [SerializeField] private bool spawnPlaceholderRoomPrefab;
     [SerializeField, ShowIf(nameof(spawnPlaceholderRoomPrefab))] GameObject placeholderRoomPrefab;
     [SerializeField] private bool debugCatchExceptionsInConsole;
@@ -59,7 +60,8 @@ public class GraphGenerator : MonoBehaviour
 
             try
             {
-                ApplyRandomSeed();
+                if(useSeed)
+                    ApplyRandomSeed();
 
                 if(data.generateGoldenPath)
                     GenerateGoldenPath();
@@ -315,7 +317,7 @@ public class GraphGenerator : MonoBehaviour
     {
         positions.Clear();
         Node.ResetID();
-        randomSeed++;
+        if(useSeed) randomSeed++;
     }
 
     private void PlaceNode(Node node, Vector2 position)
