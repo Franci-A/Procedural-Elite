@@ -7,10 +7,12 @@ using UnityEngine.Events;
 public class WeaponsHolder : ScriptableObject
 {
     public List<WeaponObject> weapons;
-    private int selectedIndex;
     public IntVariable playerExp;
     public UnityEvent OnClassChanged;
     public bool isSpecialActive = false;
+
+    private int selectedIndex;
+    public WeaponType GetSelectedType { get => (WeaponType)selectedIndex; }
 
     public GameObject GetWeaponPrefab()
     {
@@ -71,6 +73,13 @@ public class WeaponsHolder : ScriptableObject
     {
         isSpecialActive = active;
     }
+}
+
+[Serializable]
+public enum WeaponType
+{
+    MELEE,
+    DISTANCE
 }
 
 [Serializable]

@@ -31,8 +31,15 @@ public class RoomsSO : ScriptableObject
             roomsList.Add(room);
         }
 
-        if (roomsList.Count == 0) return null;
-        else return roomsList[Random.Range(0, roomsList.Count)].gameObject;   
+        if (roomsList.Count == 0)
+        {
+            var basicRoom = GetRoom(orientations, roomType, string.Empty);
+            if (basicRoom == null) return null;
+
+            Debug.LogWarning($"Couldn't find matching Room tagged {tag}. Instead, Found Untagged Room matching Type {roomType} with {orientations.Count} Orientations");
+            return basicRoom;
+        }
+        else return roomsList[Random.Range(0, roomsList.Count)].gameObject;
     }
 
     bool CheckRoomsOrientation(List<Utils.ORIENTATION> orientations, List<Utils.ORIENTATION> room)

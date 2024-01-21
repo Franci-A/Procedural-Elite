@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 4452598050071473784}
   m_Layer: 0
   m_Name: DRoom2 - L
-  m_TagString: Room_Distance
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

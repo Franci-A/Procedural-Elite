@@ -13,8 +13,8 @@ public class GraphGenerator : MonoBehaviour
     private Node finalStartNode;
 
     [Header("Security & Debug")]
-    [SerializeField, Tag] private string playerTag;
     [SerializeField] private int loopBreakIterationCount = 20000;
+    [SerializeField] private bool generateOnStart;
     [SerializeField] private bool useSeed;
     [SerializeField, ShowIf(nameof(useSeed))] private int randomSeed;
     [SerializeField] private bool spawnPlaceholderRoomPrefab;
@@ -31,10 +31,12 @@ public class GraphGenerator : MonoBehaviour
     {
         get
         {
-            if (playerTag == ROOM_TAG_MELEE)
-                return ROOM_TAG_DISTANCE;
-
-            return ROOM_TAG_MELEE;
+            return Player.Instance.GetSelectedWeaponType switch
+            {
+                WeaponType.MELEE => ROOM_TAG_DISTANCE,
+                WeaponType.DISTANCE => ROOM_TAG_MELEE,
+                _ => ROOM_TAG_MELEE
+            };
         }
     }
 
@@ -43,7 +45,7 @@ public class GraphGenerator : MonoBehaviour
 
     void Start()
     {
-        GenerateDungeon();
+        if(generateOnStart) GenerateDungeon();
     }
 
     private void ApplyRandomSeed()
@@ -60,7 +62,7 @@ public class GraphGenerator : MonoBehaviour
         GenerateDungeon();
     }
 
-    private void GenerateDungeon()
+    public void GenerateDungeon()
     {
         int loopCount = 0;
         while (true)
@@ -408,13 +410,15 @@ public class GraphGenerator : MonoBehaviour
 
     private void GeneratePrefabs()
     {
+        int loopCount = 0;
         List<Node> openList = new List<Node>();
         List<Node> clostList = new List<Node>();
 
         openList.Add(finalStartNode);
 
-        while (openList.Count > 0)
+        while (openList.Count > 0 && loopCount < totalRoomCount)
         {
+            loopCount++;
             Node node = openList[0];
             clostList.Add(node);
 
@@ -471,7 +475,6 @@ public class GraphGenerator : MonoBehaviour
     private bool ShouldCheckRoomTag(RoomType roomType)
     {
         return roomType == RoomType.GOLDEN_PATH
-            || roomType == RoomType.SIDE_PATH
-            || roomType == RoomType.KEY;
+            || roomType == RoomType.SIDE_PATH;
     }
 }

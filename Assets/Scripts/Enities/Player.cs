@@ -78,6 +78,7 @@ public class Player : MonoBehaviour {
     public ORIENTATION orientation = ORIENTATION.FREE;
 
     private float lastAttackTime = float.MinValue;
+    public WeaponType GetSelectedWeaponType { get => weaponsHolder.GetSelectedType; }
 
     // Input attributes
     [Header("Input")]
