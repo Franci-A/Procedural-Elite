@@ -61,4 +61,4 @@ MonoBehaviour:
   OnClassChanged:
     m_PersistentCalls:
       m_Calls: []
-  isSpecialActive: 0
+  isSpecialActive: 1

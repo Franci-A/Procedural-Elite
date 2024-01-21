@@ -61,7 +61,9 @@ MonoBehaviour:
     minSpawnPerWave: 3
     maxSpawnPerWave: 5
   playerExp: {fileID: 11400000, guid: 1ff689a8a620e0c40bade28073693d44, type: 2}
-  spawnRadius: 1
+  spawnRadius: 0.23
+  spriteRenderer: {fileID: 2925358226045978533}
+  deadImage: {fileID: 21300000, guid: ffb1f45baeb54a34d99aa7b710aab17d, type: 3}
 --- !u!1 &6375639489383203811
 GameObject:
   m_ObjectHideFlags: 0

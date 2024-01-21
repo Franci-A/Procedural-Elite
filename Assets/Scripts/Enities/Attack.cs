@@ -16,7 +16,7 @@ public class Attack : MonoBehaviour {
     public float knockbackDuration = 0.5f;
 	public LayerMask destroyOnHit;
 
-	[System.NonSerialized]
+    [System.NonSerialized]
     public GameObject owner;
 
 	public bool isProjectile = false;

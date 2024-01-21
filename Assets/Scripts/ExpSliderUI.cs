@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class ExpSliderUI : MonoBehaviour
 {
     [SerializeField] private IntVariable playerExp;
+    [SerializeField] private IntVariable playerLastLevel;
+    [SerializeField] private IntVariable playerNextLevel;
     [SerializeField] private Slider slider;
     [SerializeField] private WeaponsHolder weaponsHolder;
 
@@ -24,6 +26,11 @@ public class ExpSliderUI : MonoBehaviour
     private void UpdateSlider()
     {
         slider.value = playerExp.Value;
+
+        slider.minValue = playerLastLevel.Value;
+        slider.maxValue = playerNextLevel.Value;
+
+        Debug.Log($"Last {playerLastLevel.Value}, current {playerExp.Value}, next {playerNextLevel.Value}");
     }
 
 }
