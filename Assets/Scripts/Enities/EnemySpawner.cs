@@ -13,6 +13,9 @@ public class EnemySpawner : MonoBehaviour
     private int index;
     private int enemiesAlive;
 
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite deadImage;
+
     bool alreadySpawned = false;
     [Button]
     public void Init()
@@ -42,7 +45,7 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < enemiesAlive; i++)
         {
-            float rad = UnityEngine.Random.Range(0f, 2f);
+            float rad = UnityEngine.Random.Range(0f, spawnRadius);
             Vector3 offset = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
             Instantiate<Enemy>(enemyPrefab, transform.position + offset, Quaternion.identity).onDied.AddListener(OnEnemyDied);
         }
@@ -54,6 +57,10 @@ public class EnemySpawner : MonoBehaviour
         enemiesAlive--;
         if (enemiesAlive == 0 && enemyToSpawn > 0)
             SpawnEnemies();
+        else
+        {
+            spriteRenderer.sprite = deadImage;
+        }
     }
 
     private void OnDrawGizmos()
